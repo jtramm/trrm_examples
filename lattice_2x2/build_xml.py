@@ -91,21 +91,25 @@ materials_file.export_to_xml()
 pitch = 1.26
 
 # Create a surface for the fuel outer radius
-fuel_or = openmc.ZCylinder(r=0.54, name='Fuel OR')
-inner_ring = openmc.ZCylinder(r=0.4, name='inner ring')
-outer_ring = openmc.ZCylinder(r=0.65, name='outer ring')
+fuel_or =      openmc.ZCylinder(r=0.54, name='Fuel OR')
+inner_ring_a = openmc.ZCylinder(r=0.33, name='inner ring a')
+inner_ring_b = openmc.ZCylinder(r=0.45, name='inner ring b')
+outer_ring_a = openmc.ZCylinder(r=0.60, name='outer ring a')
+outer_ring_b = openmc.ZCylinder(r=0.69, name='outer ring b')
 
 # Instantiate Cells
-fuel_inner = openmc.Cell(fill=uo2, region=-inner_ring, name='fuel inner')
-fuel_outer = openmc.Cell(fill=uo2, region=+inner_ring & -fuel_or, name='fuel outer')
-moderator_inner = openmc.Cell(fill=water, region=+fuel_or & -outer_ring, name='moderator inner')
-moderator_outer = openmc.Cell(fill=water, region=+outer_ring, name='moderator outer')
+fuel_a = openmc.Cell(fill=uo2, region=-inner_ring_a, name='fuel inner a')
+fuel_b = openmc.Cell(fill=uo2, region=+inner_ring_a & -inner_ring_b, name='fuel inner b')
+fuel_c = openmc.Cell(fill=uo2, region=+inner_ring_b & -fuel_or, name='fuel inner c')
+moderator_a = openmc.Cell(fill=water, region=+fuel_or & -outer_ring_a, name='moderator inner a')
+moderator_b = openmc.Cell(fill=water, region=+outer_ring_a & -outer_ring_b, name='moderator outer b')
+moderator_c = openmc.Cell(fill=water, region=+outer_ring_b, name='moderator outer c')
 
 # Create pincell universe
 pincell_base = openmc.Universe()
 
 # Register Cells with Universe
-pincell_base.add_cells([fuel_inner, fuel_outer, moderator_inner, moderator_outer])
+pincell_base.add_cells([fuel_a, fuel_b, fuel_c, moderator_a, moderator_b, moderator_c])
 
 # Create planes for azimuthal sectors
 azimuthal_planes = []
