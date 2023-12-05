@@ -88,23 +88,42 @@ materials_file.export_to_xml()
 ########################################
 # Define an unbounded pincell universe
 
+pitch = 1.26
+
 # Create a surface for the fuel outer radius
 fuel_or = openmc.ZCylinder(r=0.54, name='Fuel OR')
-
-# Create a region represented as the inside of a rectangular prism
-pitch = 1.26
-#box = openmc.rectangular_prism(pitch, pitch, boundary_type='reflective')
+inner_ring = openmc.ZCylinder(r=0.4, name='inner ring')
+outer_ring = openmc.ZCylinder(r=0.65, name='outer ring')
 
 # Instantiate Cells
-fuel = openmc.Cell(fill=uo2, region=-fuel_or, name='fuel')
-#moderator = openmc.Cell(fill=water, region=+fuel_or & box, name='moderator')
-moderator = openmc.Cell(fill=water, region=+fuel_or, name='moderator')
+fuel_inner = openmc.Cell(fill=uo2, region=-inner_ring, name='fuel inner')
+fuel_outer = openmc.Cell(fill=uo2, region=+inner_ring & -fuel_or, name='fuel outer')
+moderator_inner = openmc.Cell(fill=water, region=+fuel_or & -outer_ring, name='moderator inner')
+moderator_outer = openmc.Cell(fill=water, region=+outer_ring, name='moderator outer')
 
 # Create pincell universe
-pincell = openmc.Universe()
+pincell_base = openmc.Universe()
 
 # Register Cells with Universe
-pincell.add_cells([fuel, moderator])
+pincell_base.add_cells([fuel_inner, fuel_outer, moderator_inner, moderator_outer])
+
+# Create planes for azimuthal sectors
+azimuthal_planes = []
+for i in range(8):
+    angle = 2 * i * openmc.pi / 8
+    normal_vector = (-openmc.sin(angle), openmc.cos(angle), 0)
+    azimuthal_planes.append(openmc.Plane(a=normal_vector[0], b=normal_vector[1], c=normal_vector[2], d=0))
+
+# Create a cell for each azimuthal sector
+azimuthal_cells = []
+for i in range(8):
+    azimuthal_cell = openmc.Cell(name=f'azimuthal_cell_{i}')
+    azimuthal_cell.fill = pincell_base
+    azimuthal_cell.region = +azimuthal_planes[i] & -azimuthal_planes[(i+1) % 8]
+    azimuthal_cells.append(azimuthal_cell)
+
+# Create a geometry with the azimuthal universes
+pincell = openmc.Universe(cells=azimuthal_cells)
 
 ########################################
 # Define a moderator lattice universe
@@ -164,11 +183,11 @@ geometry.export_to_xml()
 # Instantiate a Settings object, set all runtime parameters, and export to XML
 settings = openmc.Settings()
 settings.energy_mode = "multi-group"
-settings.batches = 100
-settings.inactive = 10
+settings.batches = 1000
+settings.inactive = 100
 settings.particles = 1000
-settings.random_ray_distance_active = 100.0
-settings.random_ray_distance_inactive = 10.0
+settings.random_ray_distance_active = 1000.0
+settings.random_ray_distance_inactive = 100.0
 settings.solver_type = 'random ray'
 
 # Create an initial uniform spatial source distribution over fissionable zones
