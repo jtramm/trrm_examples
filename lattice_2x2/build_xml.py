@@ -9,8 +9,8 @@ import openmc.mgxs
 # Create multigroup data
 
 # Instantiate the energy group data
-groups = openmc.mgxs.EnergyGroups(group_edges=[
-    1e-5, 0.0635, 10.0, 1.0e2, 1.0e3, 0.5e6, 1.0e6, 20.0e6])
+ebins = [1e-5, 0.0635, 10.0, 1.0e2, 1.0e3, 0.5e6, 1.0e6, 20.0e6]
+groups = openmc.mgxs.EnergyGroups(group_edges=ebins)
 
 # Instantiate the 7-group (C5G7) cross section data
 uo2_xsdata = openmc.XSdata('UO2', groups)
@@ -187,11 +187,11 @@ geometry.export_to_xml()
 # Instantiate a Settings object, set all runtime parameters, and export to XML
 settings = openmc.Settings()
 settings.energy_mode = "multi-group"
-settings.batches = 1000
-settings.inactive = 100
-settings.particles = 1000
-settings.random_ray_distance_active = 1000.0
-settings.random_ray_distance_inactive = 100.0
+settings.batches = 10
+settings.inactive = 5
+settings.particles = 50
+settings.random_ray_distance_active = 30.0
+settings.random_ray_distance_inactive = 10.0
 settings.solver_type = 'random ray'
 
 # Create an initial uniform spatial source distribution over fissionable zones
@@ -213,26 +213,17 @@ mesh.upper_right = (pitch/2, pitch/2)
 # Create a mesh filter that can be used in a tally
 mesh_filter = openmc.MeshFilter(mesh)
 
+# Create an energy group filter as well
+energy_filter = openmc.EnergyFilter(ebins)
+
 # Now use the mesh filter in a tally and indicate what scores are desired
-mesh_tally = openmc.Tally(name="Mesh tally")
-mesh_tally.filters = [mesh_filter]
-mesh_tally.scores = ['flux', 'fission', 'nu-fission']
-mesh_tally.estimator = 'analog'
-
-# Let's also create a tally to get the flux energy spectrum. We start by
-# creating an energy filter
-e_min, e_max = 1e-5, 20.0e6
-groups = 500
-energies = np.logspace(log10(e_min), log10(e_max), groups + 1)
-energy_filter = openmc.EnergyFilter(energies)
-
-spectrum_tally = openmc.Tally(name="Flux spectrum")
-spectrum_tally.filters = [energy_filter]
-spectrum_tally.scores = ['flux']
-spectrum_tally.estimator = 'analog'
+tally = openmc.Tally(name="Mesh tally")
+tally.filters = [mesh_filter, energy_filter]
+tally.scores = ['flux', 'fission', 'nu-fission']
+tally.estimator = 'analog'
 
 # Instantiate a Tallies collection and export to XML
-tallies = openmc.Tallies([mesh_tally, spectrum_tally])
+tallies = openmc.Tallies([tally])
 tallies.export_to_xml()
 
 ###############################################################################
@@ -242,8 +233,7 @@ tallies.export_to_xml()
 plot = openmc.Plot()
 plot.origin = [0, 0, 0]
 plot.width = [2*pitch, 2*pitch, 2*pitch]
-plot.pixels = [400, 400, 1]
-plot.color_by = 'material'
+plot.pixels = [100, 100, 1]
 plot.type = 'voxel'
 
 # Instantiate a Plots collection and export to XML
