@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<settings>
+  <run_mode>eigenvalue</run_mode>
+  <solver_type>random ray</solver_type>
+  <particles>1750</particles>
+  <random_ray_distance_active>220.0</random_ray_distance_active>
+  <random_ray_distance_inactive>20.0</random_ray_distance_inactive>
+  <batches>1400</batches>
+  <inactive>600</inactive>
+  <source strength="1.0">
+    <space type="box">
+      <parameters>-32.13 -32.13 -32.13 32.13 32.13 32.13</parameters>
+    </space>
+  </source>
+  <output>
+    <summary>false</summary>
+    <tallies>true</tallies>
+  </output>
+  <verbosity>7</verbosity>
+  <energy_mode>multi-group</energy_mode>
+</settings>

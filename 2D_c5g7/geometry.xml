@@ -1,0 +1,484 @@
+<?xml version='1.0' encoding='utf-8'?>
+<geometry>
+  <!-- Radius = 0.56 Initial surface offset = 6, cell offset = -->
+  <!-- UO2: universe = 1, Fuel = 1, Mod = 7,  -->
+  <!-- MOX 4.3: universe = 2, Fuel = 2, Mod = 7,  -->
+  <!-- MOX 7.0: universe = 3, Fuel = 3, Mod = 7,  -->
+  <!-- MOX 8.7: universe = 3, Fuel = 3, Mod = 7,  -->
+  <surface coeffs="0.0 0.0 0.311176900" id="10" type="z-cylinder" />
+<surface coeffs="0.0 0.0 0.440908000" id="11" type="z-cylinder" />
+<surface coeffs="0.0 0.0 0.540000000" id="12" type="z-cylinder" />
+<surface coeffs="0.0 0.0 0.609163000" id="13" type="z-cylinder" />
+<surface coeffs="0.0 0.0 0.693695000" id="14" type="z-cylinder" />
+<surface coeffs="-0.707106781 0.707106781 0.0 0.0" id="15" type="plane" />
+<surface coeffs="-1.000000000 0.000000000 0.0 0.0" id="16" type="plane" />
+<surface coeffs="-0.707106781 -0.707106781 0.0 0.0" id="17" type="plane" />
+<surface coeffs="-0.000000000 -1.000000000 0.0 0.0" id="18" type="plane" />
+<cell id="300" material="1" universe="1"  name="UO2" region="15 -16 -10"/>
+<cell id="301" material="1" universe="1"  name="UO2" region="16 -17 -10"/>
+<cell id="302" material="1" universe="1"  name="UO2" region="17 -18 -10"/>
+<cell id="303" material="1" universe="1"  name="UO2" region="18 15 -10"/>
+<cell id="304" material="1" universe="1"  name="UO2" region="-15 16 -10"/>
+<cell id="305" material="1" universe="1"  name="UO2" region="-16 17 -10"/>
+<cell id="306" material="1" universe="1"  name="UO2" region="-17 18 -10"/>
+<cell id="307" material="1" universe="1"  name="UO2" region="-18 -15 -10"/>
+<cell id="308" material="1" universe="1"  name="UO2" region="15 -16 10 -11"/>
+<cell id="309" material="1" universe="1"  name="UO2" region="16 -17 10 -11"/>
+<cell id="310" material="1" universe="1"  name="UO2" region="17 -18 10 -11"/>
+<cell id="311" material="1" universe="1"  name="UO2" region="18 15 10 -11"/>
+<cell id="312" material="1" universe="1"  name="UO2" region="-15 16 10 -11"/>
+<cell id="313" material="1" universe="1"  name="UO2" region="-16 17 10 -11"/>
+<cell id="314" material="1" universe="1"  name="UO2" region="-17 18 10 -11"/>
+<cell id="315" material="1" universe="1"  name="UO2" region="-18 -15 10 -11"/>
+<cell id="316" material="1" universe="1"  name="UO2" region="15 -16 11 -12"/>
+<cell id="317" material="1" universe="1"  name="UO2" region="16 -17 11 -12"/>
+<cell id="318" material="1" universe="1"  name="UO2" region="17 -18 11 -12"/>
+<cell id="319" material="1" universe="1"  name="UO2" region="18 15 11 -12"/>
+<cell id="320" material="1" universe="1"  name="UO2" region="-15 16 11 -12"/>
+<cell id="321" material="1" universe="1"  name="UO2" region="-16 17 11 -12"/>
+<cell id="322" material="1" universe="1"  name="UO2" region="-17 18 11 -12"/>
+<cell id="323" material="1" universe="1"  name="UO2" region="-18 -15 11 -12"/>
+<cell id="324" material="7" universe="1"  name="UO2" region="15 -16 12 -13"/>
+<cell id="325" material="7" universe="1"  name="UO2" region="16 -17 12 -13"/>
+<cell id="326" material="7" universe="1"  name="UO2" region="17 -18 12 -13"/>
+<cell id="327" material="7" universe="1"  name="UO2" region="18 15 12 -13"/>
+<cell id="328" material="7" universe="1"  name="UO2" region="-15 16 12 -13"/>
+<cell id="329" material="7" universe="1"  name="UO2" region="-16 17 12 -13"/>
+<cell id="330" material="7" universe="1"  name="UO2" region="-17 18 12 -13"/>
+<cell id="331" material="7" universe="1"  name="UO2" region="-18 -15 12 -13"/>
+<cell id="332" material="7" universe="1"  name="UO2" region="15 -16 13 -14"/>
+<cell id="333" material="7" universe="1"  name="UO2" region="16 -17 13 -14"/>
+<cell id="334" material="7" universe="1"  name="UO2" region="17 -18 13 -14"/>
+<cell id="335" material="7" universe="1"  name="UO2" region="18 15 13 -14"/>
+<cell id="336" material="7" universe="1"  name="UO2" region="-15 16 13 -14"/>
+<cell id="337" material="7" universe="1"  name="UO2" region="-16 17 13 -14"/>
+<cell id="338" material="7" universe="1"  name="UO2" region="-17 18 13 -14"/>
+<cell id="339" material="7" universe="1"  name="UO2" region="-18 -15 13 -14"/>
+<cell id="340" material="7" universe="1"  name="UO2" region="15 -16 14"/>
+<cell id="341" material="7" universe="1"  name="UO2" region="16 -17 14"/>
+<cell id="342" material="7" universe="1"  name="UO2" region="17 -18 14"/>
+<cell id="343" material="7" universe="1"  name="UO2" region="18 15 14"/>
+<cell id="344" material="7" universe="1"  name="UO2" region="-15 16 14"/>
+<cell id="345" material="7" universe="1"  name="UO2" region="-16 17 14"/>
+<cell id="346" material="7" universe="1"  name="UO2" region="-17 18 14"/>
+<cell id="347" material="7" universe="1"  name="UO2" region="-18 -15 14"/>
+<cell id="348" material="2" universe="2"  name="MOX 4.3" region="15 -16 -10"/>
+<cell id="349" material="2" universe="2"  name="MOX 4.3" region="16 -17 -10"/>
+<cell id="350" material="2" universe="2"  name="MOX 4.3" region="17 -18 -10"/>
+<cell id="351" material="2" universe="2"  name="MOX 4.3" region="18 15 -10"/>
+<cell id="352" material="2" universe="2"  name="MOX 4.3" region="-15 16 -10"/>
+<cell id="353" material="2" universe="2"  name="MOX 4.3" region="-16 17 -10"/>
+<cell id="354" material="2" universe="2"  name="MOX 4.3" region="-17 18 -10"/>
+<cell id="355" material="2" universe="2"  name="MOX 4.3" region="-18 -15 -10"/>
+<cell id="356" material="2" universe="2"  name="MOX 4.3" region="15 -16 10 -11"/>
+<cell id="357" material="2" universe="2"  name="MOX 4.3" region="16 -17 10 -11"/>
+<cell id="358" material="2" universe="2"  name="MOX 4.3" region="17 -18 10 -11"/>
+<cell id="359" material="2" universe="2"  name="MOX 4.3" region="18 15 10 -11"/>
+<cell id="360" material="2" universe="2"  name="MOX 4.3" region="-15 16 10 -11"/>
+<cell id="361" material="2" universe="2"  name="MOX 4.3" region="-16 17 10 -11"/>
+<cell id="362" material="2" universe="2"  name="MOX 4.3" region="-17 18 10 -11"/>
+<cell id="363" material="2" universe="2"  name="MOX 4.3" region="-18 -15 10 -11"/>
+<cell id="364" material="2" universe="2"  name="MOX 4.3" region="15 -16 11 -12"/>
+<cell id="365" material="2" universe="2"  name="MOX 4.3" region="16 -17 11 -12"/>
+<cell id="366" material="2" universe="2"  name="MOX 4.3" region="17 -18 11 -12"/>
+<cell id="367" material="2" universe="2"  name="MOX 4.3" region="18 15 11 -12"/>
+<cell id="368" material="2" universe="2"  name="MOX 4.3" region="-15 16 11 -12"/>
+<cell id="369" material="2" universe="2"  name="MOX 4.3" region="-16 17 11 -12"/>
+<cell id="370" material="2" universe="2"  name="MOX 4.3" region="-17 18 11 -12"/>
+<cell id="371" material="2" universe="2"  name="MOX 4.3" region="-18 -15 11 -12"/>
+<cell id="372" material="7" universe="2"  name="MOX 4.3" region="15 -16 12 -13"/>
+<cell id="373" material="7" universe="2"  name="MOX 4.3" region="16 -17 12 -13"/>
+<cell id="374" material="7" universe="2"  name="MOX 4.3" region="17 -18 12 -13"/>
+<cell id="375" material="7" universe="2"  name="MOX 4.3" region="18 15 12 -13"/>
+<cell id="376" material="7" universe="2"  name="MOX 4.3" region="-15 16 12 -13"/>
+<cell id="377" material="7" universe="2"  name="MOX 4.3" region="-16 17 12 -13"/>
+<cell id="378" material="7" universe="2"  name="MOX 4.3" region="-17 18 12 -13"/>
+<cell id="379" material="7" universe="2"  name="MOX 4.3" region="-18 -15 12 -13"/>
+<cell id="380" material="7" universe="2"  name="MOX 4.3" region="15 -16 13 -14"/>
+<cell id="381" material="7" universe="2"  name="MOX 4.3" region="16 -17 13 -14"/>
+<cell id="382" material="7" universe="2"  name="MOX 4.3" region="17 -18 13 -14"/>
+<cell id="383" material="7" universe="2"  name="MOX 4.3" region="18 15 13 -14"/>
+<cell id="384" material="7" universe="2"  name="MOX 4.3" region="-15 16 13 -14"/>
+<cell id="385" material="7" universe="2"  name="MOX 4.3" region="-16 17 13 -14"/>
+<cell id="386" material="7" universe="2"  name="MOX 4.3" region="-17 18 13 -14"/>
+<cell id="387" material="7" universe="2"  name="MOX 4.3" region="-18 -15 13 -14"/>
+<cell id="388" material="7" universe="2"  name="MOX 4.3" region="15 -16 14"/>
+<cell id="389" material="7" universe="2"  name="MOX 4.3" region="16 -17 14"/>
+<cell id="390" material="7" universe="2"  name="MOX 4.3" region="17 -18 14"/>
+<cell id="391" material="7" universe="2"  name="MOX 4.3" region="18 15 14"/>
+<cell id="392" material="7" universe="2"  name="MOX 4.3" region="-15 16 14"/>
+<cell id="393" material="7" universe="2"  name="MOX 4.3" region="-16 17 14"/>
+<cell id="394" material="7" universe="2"  name="MOX 4.3" region="-17 18 14"/>
+<cell id="395" material="7" universe="2"  name="MOX 4.3" region="-18 -15 14"/>
+<cell id="396" material="3" universe="3"  name="MOX 7.0" region="15 -16 -10"/>
+<cell id="397" material="3" universe="3"  name="MOX 7.0" region="16 -17 -10"/>
+<cell id="398" material="3" universe="3"  name="MOX 7.0" region="17 -18 -10"/>
+<cell id="399" material="3" universe="3"  name="MOX 7.0" region="18 15 -10"/>
+<cell id="400" material="3" universe="3"  name="MOX 7.0" region="-15 16 -10"/>
+<cell id="401" material="3" universe="3"  name="MOX 7.0" region="-16 17 -10"/>
+<cell id="402" material="3" universe="3"  name="MOX 7.0" region="-17 18 -10"/>
+<cell id="403" material="3" universe="3"  name="MOX 7.0" region="-18 -15 -10"/>
+<cell id="404" material="3" universe="3"  name="MOX 7.0" region="15 -16 10 -11"/>
+<cell id="405" material="3" universe="3"  name="MOX 7.0" region="16 -17 10 -11"/>
+<cell id="406" material="3" universe="3"  name="MOX 7.0" region="17 -18 10 -11"/>
+<cell id="407" material="3" universe="3"  name="MOX 7.0" region="18 15 10 -11"/>
+<cell id="408" material="3" universe="3"  name="MOX 7.0" region="-15 16 10 -11"/>
+<cell id="409" material="3" universe="3"  name="MOX 7.0" region="-16 17 10 -11"/>
+<cell id="410" material="3" universe="3"  name="MOX 7.0" region="-17 18 10 -11"/>
+<cell id="411" material="3" universe="3"  name="MOX 7.0" region="-18 -15 10 -11"/>
+<cell id="412" material="3" universe="3"  name="MOX 7.0" region="15 -16 11 -12"/>
+<cell id="413" material="3" universe="3"  name="MOX 7.0" region="16 -17 11 -12"/>
+<cell id="414" material="3" universe="3"  name="MOX 7.0" region="17 -18 11 -12"/>
+<cell id="415" material="3" universe="3"  name="MOX 7.0" region="18 15 11 -12"/>
+<cell id="416" material="3" universe="3"  name="MOX 7.0" region="-15 16 11 -12"/>
+<cell id="417" material="3" universe="3"  name="MOX 7.0" region="-16 17 11 -12"/>
+<cell id="418" material="3" universe="3"  name="MOX 7.0" region="-17 18 11 -12"/>
+<cell id="419" material="3" universe="3"  name="MOX 7.0" region="-18 -15 11 -12"/>
+<cell id="420" material="7" universe="3"  name="MOX 7.0" region="15 -16 12 -13"/>
+<cell id="421" material="7" universe="3"  name="MOX 7.0" region="16 -17 12 -13"/>
+<cell id="422" material="7" universe="3"  name="MOX 7.0" region="17 -18 12 -13"/>
+<cell id="423" material="7" universe="3"  name="MOX 7.0" region="18 15 12 -13"/>
+<cell id="424" material="7" universe="3"  name="MOX 7.0" region="-15 16 12 -13"/>
+<cell id="425" material="7" universe="3"  name="MOX 7.0" region="-16 17 12 -13"/>
+<cell id="426" material="7" universe="3"  name="MOX 7.0" region="-17 18 12 -13"/>
+<cell id="427" material="7" universe="3"  name="MOX 7.0" region="-18 -15 12 -13"/>
+<cell id="428" material="7" universe="3"  name="MOX 7.0" region="15 -16 13 -14"/>
+<cell id="429" material="7" universe="3"  name="MOX 7.0" region="16 -17 13 -14"/>
+<cell id="430" material="7" universe="3"  name="MOX 7.0" region="17 -18 13 -14"/>
+<cell id="431" material="7" universe="3"  name="MOX 7.0" region="18 15 13 -14"/>
+<cell id="432" material="7" universe="3"  name="MOX 7.0" region="-15 16 13 -14"/>
+<cell id="433" material="7" universe="3"  name="MOX 7.0" region="-16 17 13 -14"/>
+<cell id="434" material="7" universe="3"  name="MOX 7.0" region="-17 18 13 -14"/>
+<cell id="435" material="7" universe="3"  name="MOX 7.0" region="-18 -15 13 -14"/>
+<cell id="436" material="7" universe="3"  name="MOX 7.0" region="15 -16 14"/>
+<cell id="437" material="7" universe="3"  name="MOX 7.0" region="16 -17 14"/>
+<cell id="438" material="7" universe="3"  name="MOX 7.0" region="17 -18 14"/>
+<cell id="439" material="7" universe="3"  name="MOX 7.0" region="18 15 14"/>
+<cell id="440" material="7" universe="3"  name="MOX 7.0" region="-15 16 14"/>
+<cell id="441" material="7" universe="3"  name="MOX 7.0" region="-16 17 14"/>
+<cell id="442" material="7" universe="3"  name="MOX 7.0" region="-17 18 14"/>
+<cell id="443" material="7" universe="3"  name="MOX 7.0" region="-18 -15 14"/>
+<cell id="444" material="4" universe="4"  name="MOX 8.7" region="15 -16 -10"/>
+<cell id="445" material="4" universe="4"  name="MOX 8.7" region="16 -17 -10"/>
+<cell id="446" material="4" universe="4"  name="MOX 8.7" region="17 -18 -10"/>
+<cell id="447" material="4" universe="4"  name="MOX 8.7" region="18 15 -10"/>
+<cell id="448" material="4" universe="4"  name="MOX 8.7" region="-15 16 -10"/>
+<cell id="449" material="4" universe="4"  name="MOX 8.7" region="-16 17 -10"/>
+<cell id="450" material="4" universe="4"  name="MOX 8.7" region="-17 18 -10"/>
+<cell id="451" material="4" universe="4"  name="MOX 8.7" region="-18 -15 -10"/>
+<cell id="452" material="4" universe="4"  name="MOX 8.7" region="15 -16 10 -11"/>
+<cell id="453" material="4" universe="4"  name="MOX 8.7" region="16 -17 10 -11"/>
+<cell id="454" material="4" universe="4"  name="MOX 8.7" region="17 -18 10 -11"/>
+<cell id="455" material="4" universe="4"  name="MOX 8.7" region="18 15 10 -11"/>
+<cell id="456" material="4" universe="4"  name="MOX 8.7" region="-15 16 10 -11"/>
+<cell id="457" material="4" universe="4"  name="MOX 8.7" region="-16 17 10 -11"/>
+<cell id="458" material="4" universe="4"  name="MOX 8.7" region="-17 18 10 -11"/>
+<cell id="459" material="4" universe="4"  name="MOX 8.7" region="-18 -15 10 -11"/>
+<cell id="460" material="4" universe="4"  name="MOX 8.7" region="15 -16 11 -12"/>
+<cell id="461" material="4" universe="4"  name="MOX 8.7" region="16 -17 11 -12"/>
+<cell id="462" material="4" universe="4"  name="MOX 8.7" region="17 -18 11 -12"/>
+<cell id="463" material="4" universe="4"  name="MOX 8.7" region="18 15 11 -12"/>
+<cell id="464" material="4" universe="4"  name="MOX 8.7" region="-15 16 11 -12"/>
+<cell id="465" material="4" universe="4"  name="MOX 8.7" region="-16 17 11 -12"/>
+<cell id="466" material="4" universe="4"  name="MOX 8.7" region="-17 18 11 -12"/>
+<cell id="467" material="4" universe="4"  name="MOX 8.7" region="-18 -15 11 -12"/>
+<cell id="468" material="7" universe="4"  name="MOX 8.7" region="15 -16 12 -13"/>
+<cell id="469" material="7" universe="4"  name="MOX 8.7" region="16 -17 12 -13"/>
+<cell id="470" material="7" universe="4"  name="MOX 8.7" region="17 -18 12 -13"/>
+<cell id="471" material="7" universe="4"  name="MOX 8.7" region="18 15 12 -13"/>
+<cell id="472" material="7" universe="4"  name="MOX 8.7" region="-15 16 12 -13"/>
+<cell id="473" material="7" universe="4"  name="MOX 8.7" region="-16 17 12 -13"/>
+<cell id="474" material="7" universe="4"  name="MOX 8.7" region="-17 18 12 -13"/>
+<cell id="475" material="7" universe="4"  name="MOX 8.7" region="-18 -15 12 -13"/>
+<cell id="476" material="7" universe="4"  name="MOX 8.7" region="15 -16 13 -14"/>
+<cell id="477" material="7" universe="4"  name="MOX 8.7" region="16 -17 13 -14"/>
+<cell id="478" material="7" universe="4"  name="MOX 8.7" region="17 -18 13 -14"/>
+<cell id="479" material="7" universe="4"  name="MOX 8.7" region="18 15 13 -14"/>
+<cell id="480" material="7" universe="4"  name="MOX 8.7" region="-15 16 13 -14"/>
+<cell id="481" material="7" universe="4"  name="MOX 8.7" region="-16 17 13 -14"/>
+<cell id="482" material="7" universe="4"  name="MOX 8.7" region="-17 18 13 -14"/>
+<cell id="483" material="7" universe="4"  name="MOX 8.7" region="-18 -15 13 -14"/>
+<cell id="484" material="7" universe="4"  name="MOX 8.7" region="15 -16 14"/>
+<cell id="485" material="7" universe="4"  name="MOX 8.7" region="16 -17 14"/>
+<cell id="486" material="7" universe="4"  name="MOX 8.7" region="17 -18 14"/>
+<cell id="487" material="7" universe="4"  name="MOX 8.7" region="18 15 14"/>
+<cell id="488" material="7" universe="4"  name="MOX 8.7" region="-15 16 14"/>
+<cell id="489" material="7" universe="4"  name="MOX 8.7" region="-16 17 14"/>
+<cell id="490" material="7" universe="4"  name="MOX 8.7" region="-17 18 14"/>
+<cell id="491" material="7" universe="4"  name="MOX 8.7" region="-18 -15 14"/>
+<cell id="492" material="5" universe="5"  name="Fission Chamber" region="15 -16 -10"/>
+<cell id="493" material="5" universe="5"  name="Fission Chamber" region="16 -17 -10"/>
+<cell id="494" material="5" universe="5"  name="Fission Chamber" region="17 -18 -10"/>
+<cell id="495" material="5" universe="5"  name="Fission Chamber" region="18 15 -10"/>
+<cell id="496" material="5" universe="5"  name="Fission Chamber" region="-15 16 -10"/>
+<cell id="497" material="5" universe="5"  name="Fission Chamber" region="-16 17 -10"/>
+<cell id="498" material="5" universe="5"  name="Fission Chamber" region="-17 18 -10"/>
+<cell id="499" material="5" universe="5"  name="Fission Chamber" region="-18 -15 -10"/>
+<cell id="500" material="5" universe="5"  name="Fission Chamber" region="15 -16 10 -11"/>
+<cell id="501" material="5" universe="5"  name="Fission Chamber" region="16 -17 10 -11"/>
+<cell id="502" material="5" universe="5"  name="Fission Chamber" region="17 -18 10 -11"/>
+<cell id="503" material="5" universe="5"  name="Fission Chamber" region="18 15 10 -11"/>
+<cell id="504" material="5" universe="5"  name="Fission Chamber" region="-15 16 10 -11"/>
+<cell id="505" material="5" universe="5"  name="Fission Chamber" region="-16 17 10 -11"/>
+<cell id="506" material="5" universe="5"  name="Fission Chamber" region="-17 18 10 -11"/>
+<cell id="507" material="5" universe="5"  name="Fission Chamber" region="-18 -15 10 -11"/>
+<cell id="508" material="5" universe="5"  name="Fission Chamber" region="15 -16 11 -12"/>
+<cell id="509" material="5" universe="5"  name="Fission Chamber" region="16 -17 11 -12"/>
+<cell id="510" material="5" universe="5"  name="Fission Chamber" region="17 -18 11 -12"/>
+<cell id="511" material="5" universe="5"  name="Fission Chamber" region="18 15 11 -12"/>
+<cell id="512" material="5" universe="5"  name="Fission Chamber" region="-15 16 11 -12"/>
+<cell id="513" material="5" universe="5"  name="Fission Chamber" region="-16 17 11 -12"/>
+<cell id="514" material="5" universe="5"  name="Fission Chamber" region="-17 18 11 -12"/>
+<cell id="515" material="5" universe="5"  name="Fission Chamber" region="-18 -15 11 -12"/>
+<cell id="516" material="7" universe="5"  name="Fission Chamber" region="15 -16 12 -13"/>
+<cell id="517" material="7" universe="5"  name="Fission Chamber" region="16 -17 12 -13"/>
+<cell id="518" material="7" universe="5"  name="Fission Chamber" region="17 -18 12 -13"/>
+<cell id="519" material="7" universe="5"  name="Fission Chamber" region="18 15 12 -13"/>
+<cell id="520" material="7" universe="5"  name="Fission Chamber" region="-15 16 12 -13"/>
+<cell id="521" material="7" universe="5"  name="Fission Chamber" region="-16 17 12 -13"/>
+<cell id="522" material="7" universe="5"  name="Fission Chamber" region="-17 18 12 -13"/>
+<cell id="523" material="7" universe="5"  name="Fission Chamber" region="-18 -15 12 -13"/>
+<cell id="524" material="7" universe="5"  name="Fission Chamber" region="15 -16 13 -14"/>
+<cell id="525" material="7" universe="5"  name="Fission Chamber" region="16 -17 13 -14"/>
+<cell id="526" material="7" universe="5"  name="Fission Chamber" region="17 -18 13 -14"/>
+<cell id="527" material="7" universe="5"  name="Fission Chamber" region="18 15 13 -14"/>
+<cell id="528" material="7" universe="5"  name="Fission Chamber" region="-15 16 13 -14"/>
+<cell id="529" material="7" universe="5"  name="Fission Chamber" region="-16 17 13 -14"/>
+<cell id="530" material="7" universe="5"  name="Fission Chamber" region="-17 18 13 -14"/>
+<cell id="531" material="7" universe="5"  name="Fission Chamber" region="-18 -15 13 -14"/>
+<cell id="532" material="7" universe="5"  name="Fission Chamber" region="15 -16 14"/>
+<cell id="533" material="7" universe="5"  name="Fission Chamber" region="16 -17 14"/>
+<cell id="534" material="7" universe="5"  name="Fission Chamber" region="17 -18 14"/>
+<cell id="535" material="7" universe="5"  name="Fission Chamber" region="18 15 14"/>
+<cell id="536" material="7" universe="5"  name="Fission Chamber" region="-15 16 14"/>
+<cell id="537" material="7" universe="5"  name="Fission Chamber" region="-16 17 14"/>
+<cell id="538" material="7" universe="5"  name="Fission Chamber" region="-17 18 14"/>
+<cell id="539" material="7" universe="5"  name="Fission Chamber" region="-18 -15 14"/>
+<cell id="540" material="6" universe="6"  name="Guide Tube" region="15 -16 -10"/>
+<cell id="541" material="6" universe="6"  name="Guide Tube" region="16 -17 -10"/>
+<cell id="542" material="6" universe="6"  name="Guide Tube" region="17 -18 -10"/>
+<cell id="543" material="6" universe="6"  name="Guide Tube" region="18 15 -10"/>
+<cell id="544" material="6" universe="6"  name="Guide Tube" region="-15 16 -10"/>
+<cell id="545" material="6" universe="6"  name="Guide Tube" region="-16 17 -10"/>
+<cell id="546" material="6" universe="6"  name="Guide Tube" region="-17 18 -10"/>
+<cell id="547" material="6" universe="6"  name="Guide Tube" region="-18 -15 -10"/>
+<cell id="548" material="6" universe="6"  name="Guide Tube" region="15 -16 10 -11"/>
+<cell id="549" material="6" universe="6"  name="Guide Tube" region="16 -17 10 -11"/>
+<cell id="550" material="6" universe="6"  name="Guide Tube" region="17 -18 10 -11"/>
+<cell id="551" material="6" universe="6"  name="Guide Tube" region="18 15 10 -11"/>
+<cell id="552" material="6" universe="6"  name="Guide Tube" region="-15 16 10 -11"/>
+<cell id="553" material="6" universe="6"  name="Guide Tube" region="-16 17 10 -11"/>
+<cell id="554" material="6" universe="6"  name="Guide Tube" region="-17 18 10 -11"/>
+<cell id="555" material="6" universe="6"  name="Guide Tube" region="-18 -15 10 -11"/>
+<cell id="556" material="6" universe="6"  name="Guide Tube" region="15 -16 11 -12"/>
+<cell id="557" material="6" universe="6"  name="Guide Tube" region="16 -17 11 -12"/>
+<cell id="558" material="6" universe="6"  name="Guide Tube" region="17 -18 11 -12"/>
+<cell id="559" material="6" universe="6"  name="Guide Tube" region="18 15 11 -12"/>
+<cell id="560" material="6" universe="6"  name="Guide Tube" region="-15 16 11 -12"/>
+<cell id="561" material="6" universe="6"  name="Guide Tube" region="-16 17 11 -12"/>
+<cell id="562" material="6" universe="6"  name="Guide Tube" region="-17 18 11 -12"/>
+<cell id="563" material="6" universe="6"  name="Guide Tube" region="-18 -15 11 -12"/>
+<cell id="564" material="7" universe="6"  name="Guide Tube" region="15 -16 12 -13"/>
+<cell id="565" material="7" universe="6"  name="Guide Tube" region="16 -17 12 -13"/>
+<cell id="566" material="7" universe="6"  name="Guide Tube" region="17 -18 12 -13"/>
+<cell id="567" material="7" universe="6"  name="Guide Tube" region="18 15 12 -13"/>
+<cell id="568" material="7" universe="6"  name="Guide Tube" region="-15 16 12 -13"/>
+<cell id="569" material="7" universe="6"  name="Guide Tube" region="-16 17 12 -13"/>
+<cell id="570" material="7" universe="6"  name="Guide Tube" region="-17 18 12 -13"/>
+<cell id="571" material="7" universe="6"  name="Guide Tube" region="-18 -15 12 -13"/>
+<cell id="572" material="7" universe="6"  name="Guide Tube" region="15 -16 13 -14"/>
+<cell id="573" material="7" universe="6"  name="Guide Tube" region="16 -17 13 -14"/>
+<cell id="574" material="7" universe="6"  name="Guide Tube" region="17 -18 13 -14"/>
+<cell id="575" material="7" universe="6"  name="Guide Tube" region="18 15 13 -14"/>
+<cell id="576" material="7" universe="6"  name="Guide Tube" region="-15 16 13 -14"/>
+<cell id="577" material="7" universe="6"  name="Guide Tube" region="-16 17 13 -14"/>
+<cell id="578" material="7" universe="6"  name="Guide Tube" region="-17 18 13 -14"/>
+<cell id="579" material="7" universe="6"  name="Guide Tube" region="-18 -15 13 -14"/>
+<cell id="580" material="7" universe="6"  name="Guide Tube" region="15 -16 14"/>
+<cell id="581" material="7" universe="6"  name="Guide Tube" region="16 -17 14"/>
+<cell id="582" material="7" universe="6"  name="Guide Tube" region="17 -18 14"/>
+<cell id="583" material="7" universe="6"  name="Guide Tube" region="18 15 14"/>
+<cell id="584" material="7" universe="6"  name="Guide Tube" region="-15 16 14"/>
+<cell id="585" material="7" universe="6"  name="Guide Tube" region="-16 17 14"/>
+<cell id="586" material="7" universe="6"  name="Guide Tube" region="-17 18 14"/>
+<cell id="587" material="7" universe="6"  name="Guide Tube" region="-18 -15 14"/>
+<cell id="7" material="7" name="Reflector" universe="8" />
+  <cell fill="101" id="16" name="UO2 Unrodded Assembly" universe="9" />
+  <cell fill="103" id="18" name="MOX Unrodded Assembly" universe="11" />
+  <!--  <cell fill="105" id="20" name="Water Unrodded Assembly" universe="13" /> -->
+  <cell fill="201" id="22" name="Core" region="2 4 -3 -5" universe="0" />
+  <lattice id="101" name="UO2 Unrodded Assembly">
+    <pitch>1.26 1.26</pitch>
+    <dimension>17 17</dimension>
+    <lower_left>-10.71 -10.71</lower_left>
+    <universes>
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 6 1 1 6 1 1 6 1 1 1 1 1 
+1 1 1 6 1 1 1 1 1 1 1 1 1 6 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 6 1 1 6 1 1 6 1 1 6 1 1 6 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 6 1 1 6 1 1 5 1 1 6 1 1 6 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 6 1 1 6 1 1 6 1 1 6 1 1 6 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 6 1 1 1 1 1 1 1 1 1 6 1 1 1 
+1 1 1 1 1 6 1 1 6 1 1 6 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </universes>
+  </lattice>
+  <lattice id="103" name="MOX Unrodded Assembly">
+    <pitch>1.26 1.26</pitch>
+    <dimension>17 17</dimension>
+    <lower_left>-10.71 -10.71</lower_left>
+    <universes>
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 
+2 3 3 3 3 6 3 3 6 3 3 6 3 3 3 3 2 
+2 3 3 6 3 4 4 4 4 4 4 4 3 6 3 3 2 
+2 3 3 3 4 4 4 4 4 4 4 4 4 3 3 3 2 
+2 3 6 4 4 6 4 4 6 4 4 6 4 4 6 3 2 
+2 3 3 4 4 4 4 4 4 4 4 4 4 4 3 3 2 
+2 3 3 4 4 4 4 4 4 4 4 4 4 4 3 3 2 
+2 3 6 4 4 6 4 4 5 4 4 6 4 4 6 3 2 
+2 3 3 4 4 4 4 4 4 4 4 4 4 4 3 3 2 
+2 3 3 4 4 4 4 4 4 4 4 4 4 4 3 3 2 
+2 3 6 4 4 6 4 4 6 4 4 6 4 4 6 3 2 
+2 3 3 3 4 4 4 4 4 4 4 4 4 3 3 3 2 
+2 3 3 6 3 4 4 4 4 4 4 4 3 6 3 3 2 
+2 3 3 3 3 6 3 3 6 3 3 6 3 3 3 3 2 
+2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 </universes>
+  </lattice>
+
+  <!--
+  <lattice id="105" name="Reflector Unrodded Assembly">
+    <pitch>1.26 1.26</pitch>
+    <dimension>17 17</dimension>
+    <lower_left>-10.71 -10.71</lower_left>
+    <universes>8</universes>
+  </lattice>
+-->
+
+  <lattice id="106" name="Fine Moderator Mesh Lattice">
+    <pitch>0.126 0.126</pitch>
+    <dimension>10 10</dimension>
+    <lower_left>-0.63 -0.63</lower_left>
+    <universes>
+      8 8 8 8 8 8 8 8 8 8
+      8 8 8 8 8 8 8 8 8 8
+      8 8 8 8 8 8 8 8 8 8
+      8 8 8 8 8 8 8 8 8 8
+      8 8 8 8 8 8 8 8 8 8
+      8 8 8 8 8 8 8 8 8 8
+      8 8 8 8 8 8 8 8 8 8
+      8 8 8 8 8 8 8 8 8 8
+      8 8 8 8 8 8 8 8 8 8
+      8 8 8 8 8 8 8 8 8 8
+  </universes>
+    <outer>8</outer>
+  </lattice>
+  <cell fill="106" id="23" name="Fine Moderator Mesh Region" universe="14" />
+
+  <lattice id="107" name="Reflector Unrodded Bottom/Side Assembly Lattice">
+    <pitch>1.26 1.26</pitch>
+    <dimension>17 17</dimension>
+    <lower_left>-10.71 -10.71</lower_left>
+    <universes>
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+
+      <!--
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+      -->
+      
+    </universes>
+  </lattice>
+  <cell fill="107" id="24" name="Refector Unrodded Bottom Assembly" universe="15"/>
+  <cell fill="107" id="25" name="Refector Unrodded Side Assembly"   universe="16" rotation="0 0 90"/>
+  
+  <lattice id="108" name="Reflector Unrodded Corner Assembly Lattice">
+    <pitch>1.26 1.26</pitch>
+    <dimension>17 17</dimension>
+    <lower_left>-10.71 -10.71</lower_left>
+    <universes>
+      <!--
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+    14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+      -->
+      
+    14 14 14 14 14 14 14 14 14 14 14  8  8  8  8  8  8  
+    14 14 14 14 14 14 14 14 14 14 14  8  8  8  8  8  8  
+    14 14 14 14 14 14 14 14 14 14 14  8  8  8  8  8  8  
+    14 14 14 14 14 14 14 14 14 14 14  8  8  8  8  8  8  
+    14 14 14 14 14 14 14 14 14 14 14  8  8  8  8  8  8  
+    14 14 14 14 14 14 14 14 14 14 14  8  8  8  8  8  8  
+    14 14 14 14 14 14 14 14 14 14 14  8  8  8  8  8  8  
+    14 14 14 14 14 14 14 14 14 14 14  8  8  8  8  8  8  
+    14 14 14 14 14 14 14 14 14 14 14  8  8  8  8  8  8  
+    14 14 14 14 14 14 14 14 14 14 14  8  8  8  8  8  8  
+    14 14 14 14 14 14 14 14 14 14 14  8  8  8  8  8  8  
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+    8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8  8 
+    </universes>
+  </lattice>
+  <cell fill="108" id="26" name="Refector Unrodded Corner Assembly" universe="17"/>
+
+  <lattice id="201" name="3x3 core lattice">
+    <pitch>21.42 21.42</pitch>
+    <dimension>3 3</dimension>
+    <lower_left>-32.13 -32.13</lower_left>
+    <universes>
+9  11 16 
+11 9  16 
+15 15 17 </universes>
+  </lattice>
+
+  <surface coeffs="0 0 0.54" id="1" name="Pin Cell ZCylinder" type="z-cylinder" />
+  <surface boundary="reflective" coeffs="-32.13" id="2" name="Core x-min" type="x-plane" />
+  <surface boundary="vacuum" coeffs="32.13" id="3" name="Core x-max" type="x-plane" />
+  <surface boundary="vacuum" coeffs="-32.13" id="4" name="Core y-min" type="y-plane" />
+  <surface boundary="reflective" coeffs="32.13" id="5" name="Core y-max" type="y-plane" />
+</geometry>

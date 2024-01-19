@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<tallies>
+  <mesh id="1">
+    <dimension>51 51 1</dimension>
+    <lower_left>-32.13 -32.13 -1e+50</lower_left>
+    <upper_right>32.13 32.13 1e+50</upper_right>
+  </mesh>
+  <filter id="1" type="mesh">
+    <bins>1</bins>
+  </filter>
+  <filter id="2" type="energy">
+    <bins>1.0E-5 5.179474679231213E-4 0.026826957952797246 1.389495494373136 71.96856730011514 3727.593720314938 193069.77288832457 1.0E+7</bins> 
+  </filter>
+  <tally id="1" name="tally 1">
+    <filters>1</filters>
+    <scores>fission flux</scores>
+    <estimator>analog</estimator>
+  </tally>
+</tallies>
