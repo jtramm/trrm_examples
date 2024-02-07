@@ -186,7 +186,7 @@ def create_random_ray_model():
     settings.energy_mode = "multi-group"
     settings.batches = 100
     settings.inactive = 50
-    settings.particles = 10000
+    settings.particles = 100000
     settings.run_mode = 'fixed source'
 
     #settings.random_ray_distance_active = 100.0
@@ -223,7 +223,7 @@ def create_random_ray_model():
     mesh = openmc.RegularMesh()
     mesh.dimension = (x_dim, y_dim, z_dim)
     mesh.lower_left = (0.0, 0.0, 0.0)
-    mesh.upper_right = (x/x_dim, y/y_dim, z/z_dim)
+    mesh.upper_right = (x, y, z)
 
     # Create a mesh filter that can be used in a tally
     mesh_filter = openmc.MeshFilter(mesh)

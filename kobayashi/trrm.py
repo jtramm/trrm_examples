@@ -184,36 +184,29 @@ def create_random_ray_model():
     # Instantiate a Settings object, set all runtime parameters, and export to XML
     settings = openmc.Settings()
     settings.energy_mode = "multi-group"
-    settings.batches = 100
-    settings.inactive = 50
+    settings.batches = 1000
+    settings.inactive = 500
     settings.particles = 10000
     settings.run_mode = 'fixed source'
 
-    #settings.random_ray_distance_active = 100.0
-    #settings.random_ray_distance_inactive = 20.0
-    #settings.solver_type = 'random ray'
-    #settings.run_mode = 'fixed source'
+    settings.random_ray_distance_active = 400.0
+    settings.random_ray_distance_inactive = 100.0
+    settings.solver_type = 'random ray'
 
     # Create an initial uniform spatial source for ray integration
-    #lower_left = (-pitch, -pitch, -1)
-    #upper_right = (pitch, pitch, 1)
-    #uniform_dist = openmc.stats.Box(lower_left, upper_right, only_fissionable=False)
-    #rr_source = openmc.IndependentSource(space=uniform_dist, particle="random_ray")
+    lower_left = (0.0, 0.0, 0.0)
+    upper_right = (x, y, z)
+    uniform_dist = openmc.stats.Box(lower_left, upper_right, only_fissionable=False)
+    rr_source = openmc.IndependentSource(space=uniform_dist, particle="random_ray")
     
     # Create the neutron source in the bottom right of the moderator
     strengths = [1.0] # Good - fast group appears largest (besides most thermal)
     midpoints = [100.0]
     energy_distribution = openmc.stats.Discrete(x=midpoints,p=strengths)
     
-    lower_left_src = [0.0, 0.0, 0.0]
-    upper_right_src = [10.0, 10.0, 10.0]
-    spatial_distribution = openmc.stats.Box(lower_left_src, upper_right_src, only_fissionable=False)
-
-    #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_mat], strength=2.0) # works
-    source = openmc.IndependentSource(space=spatial_distribution, energy=energy_distribution,  strength=1.0) # works
+    source = openmc.IndependentSource(energy=energy_distribution, domains=[source_mat], strength=1.0) # works
     
-    #settings.source = [source, rr_source]
-    settings.source = [source]
+    settings.source = [source, rr_source]
     #settings.export_to_xml()
 
     ###############################################################################
@@ -223,7 +216,7 @@ def create_random_ray_model():
     mesh = openmc.RegularMesh()
     mesh.dimension = (x_dim, y_dim, z_dim)
     mesh.lower_left = (0.0, 0.0, 0.0)
-    mesh.upper_right = (x/x_dim, y/y_dim, z/z_dim)
+    mesh.upper_right = (x, y, z)
 
     # Create a mesh filter that can be used in a tally
     mesh_filter = openmc.MeshFilter(mesh)
@@ -232,9 +225,7 @@ def create_random_ray_model():
     tally = openmc.Tally(name="Mesh tally")
     tally.filters = [mesh_filter]
     tally.scores = ['flux']
-    tally.estimator = 'collision'
-    #tally.estimator = 'analog'
-
+    tally.estimator = 'analog'
 
     # Instantiate a Tallies collection and export to XML
     tallies = openmc.Tallies([tally])
@@ -251,7 +242,6 @@ def create_random_ray_model():
 
     # Instantiate a Plots collection and export to XML
     plot_file = openmc.Plots([plot])
-    #plot_file.export_to_xml()
     
     model = openmc.model.Model()
     model.geometry = geometry
