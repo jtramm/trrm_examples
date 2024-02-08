@@ -82,55 +82,55 @@ def create_random_ray_model():
     au.add_cells([shield_cell])
 
     z_base = [
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [vu, vu, vu, vu, au, au, au, au, au, au],
-            [vu, au, au, au, au, au, au, au, au, au],
-            [vu, au, au, au, au, au, au, au, au, au],
-            [vu, au, au, au, au, au, au, au, au, au],
-            [vu, au, au, au, au, au, au, au, au, au],
-            [su, au, au, au, au, au, au, au, au, au]
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [vu, vu, vu, vu, au, au],
+            [vu, au, au, au, au, au],
+            [vu, au, au, au, au, au],
+            [vu, au, au, au, au, au],
+            [vu, au, au, au, au, au],
+            [su, au, au, au, au, au]
                          ]
     
     z_col = [
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, vu, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au]
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, vu, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au]
                          ]
     
     z_high = [
-            [au, au, au, vu, au, au, au, au, au, au],
-            [au, au, au, vu, au, au, au, au, au, au],
-            [au, au, au, vu, au, au, au, au, au, au],
-            [au, au, au, vu, au, au, au, au, au, au],
-            [au, au, au, vu, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au]
+            [au, au, au, vu, au, au],
+            [au, au, au, vu, au, au],
+            [au, au, au, vu, au, au],
+            [au, au, au, vu, au, au],
+            [au, au, au, vu, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au]
                          ]
     
     z_cap = [
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au],
-            [au, au, au, au, au, au, au, au, au, au]
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au],
+            [au, au, au, au, au, au]
                          ]
 
     dogleg_pattern = [
