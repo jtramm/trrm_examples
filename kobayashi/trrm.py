@@ -2,6 +2,18 @@ import numpy as np
 
 import openmc
 
+def fill_3d_list(n, val):
+    """
+    Generates a 3D list of dimensions nxnxn filled with copies of val.
+
+    Parameters:
+    n (int): The dimension of the 3D list.
+    val (any): The value to fill the 3D list with.
+
+    Returns:
+    list: A 3D list of dimensions nxnxn filled with val.
+    """
+    return [[[val for _ in range(n)] for _ in range(n)] for _ in range(n)]
 
 def create_random_ray_model():
     ###############################################################################
@@ -72,14 +84,48 @@ def create_random_ray_model():
     void_cell = openmc.Cell(fill=void_mat, name='infinite void region')
     shield_cell = openmc.Cell(fill=shield_mat, name='infinite shield region')
     
+    sub = openmc.Universe()
+    sub.add_cells([source_cell])
+    
+    vub = openmc.Universe()
+    vub.add_cells([void_cell])
+    
+    aub = openmc.Universe()
+    aub.add_cells([shield_cell])
+    
+    # n controls the dimension of subdivision within each outer lattice element
+    # E.g., n = 10 results in 1cm cubic FSRs
+    n = 10
+    delta = 10.0 / n
+    ll = [-5.0, -5.0, -5.0]
+    pitch = [delta, delta, delta]
+
+    source_lattice = openmc.RectLattice()
+    source_lattice.lower_left = ll
+    source_lattice.pitch = pitch
+    source_lattice.universes = fill_3d_list(n, sub)
+    
+    void_lattice = openmc.RectLattice()
+    void_lattice.lower_left = ll
+    void_lattice.pitch = pitch
+    void_lattice.universes = fill_3d_list(n, vub)
+    
+    shield_lattice = openmc.RectLattice()
+    shield_lattice.lower_left = ll
+    shield_lattice.pitch = pitch
+    shield_lattice.universes = fill_3d_list(n, aub)
+    
+    source_lattice_cell = openmc.Cell(fill=source_lattice)
     su = openmc.Universe()
-    su.add_cells([source_cell])
+    su.add_cells([source_lattice_cell])
     
+    void_lattice_cell = openmc.Cell(fill=void_lattice)
     vu = openmc.Universe()
-    vu.add_cells([void_cell])
+    vu.add_cells([void_lattice_cell])
     
+    shield_lattice_cell = openmc.Cell(fill=shield_lattice)
     au = openmc.Universe()
-    au.add_cells([shield_cell])
+    au.add_cells([shield_lattice_cell])
 
     z_base = [
             [au, au, au, au, au, au],
