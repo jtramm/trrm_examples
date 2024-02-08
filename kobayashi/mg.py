@@ -220,24 +220,61 @@ def create_random_ray_model():
     # Define tallies
 
     # Create a mesh that will be used for tallying
-    mesh = openmc.RegularMesh()
-    mesh.dimension = (x_dim, y_dim, z_dim)
-    mesh.lower_left = (0.0, 0.0, 0.0)
-    mesh.upper_right = (x, y, z)
+    #mesh = openmc.RegularMesh()
+    #mesh.dimension = (x_dim, y_dim, z_dim)
+    #mesh.lower_left = (0.0, 0.0, 0.0)
+    #mesh.upper_right = (x, y, z)
 
     # Create a mesh filter that can be used in a tally
-    mesh_filter = openmc.MeshFilter(mesh)
+    #mesh_filter = openmc.MeshFilter(mesh)
 
     # Now use the mesh filter in a tally and indicate what scores are desired
-    tally = openmc.Tally(name="Mesh tally")
-    tally.filters = [mesh_filter]
-    tally.scores = ['flux']
-    tally.estimator = 'collision'
+    #tally = openmc.Tally(name="Mesh tally")
+    #tally.filters = [mesh_filter]
+    #tally.scores = ['flux']
+    #tally.estimator = 'collision'
     #tally.estimator = 'analog'
 
+    estimator = 'collision'
+
+    # Case 3A
+    mesh_3A = openmc.RegularMesh()
+    mesh_3A.dimension = (1, y_dim, 1)
+    mesh_3A.lower_left = (0.0, 0.0, 0.0)
+    mesh_3A.upper_right = (10.0, y, 10.0)
+    mesh_filter_3A = openmc.MeshFilter(mesh_3A)
+    
+    tally_3A = openmc.Tally(name="Case 3A")
+    tally_3A.filters = [mesh_filter_3A]
+    tally_3A.scores = ['flux']
+    tally_3A.estimator = estimator
+    
+    # Case 3B
+    mesh_3B = openmc.RegularMesh()
+    mesh_3B.dimension = (x_dim, 1, 1)
+    mesh_3B.lower_left = (0.0, 50.0, 0.0)
+    mesh_3B.upper_right = (x, 60.0, 10.0)
+    mesh_filter_3B = openmc.MeshFilter(mesh_3B)
+    
+    tally_3B = openmc.Tally(name="Case 3B")
+    tally_3B.filters = [mesh_filter_3B]
+    tally_3B.scores = ['flux']
+    tally_3B.estimator = estimator
+    
+    # Case 3C
+    mesh_3C = openmc.RegularMesh()
+    mesh_3C.dimension = (x_dim, 1, 1)
+    mesh_3C.lower_left = (0.0, 90.0, 30.0)
+    mesh_3C.upper_right = (x, 100.0, 40.0)
+    mesh_filter_3C = openmc.MeshFilter(mesh_3C)
+    
+    tally_3C = openmc.Tally(name="Case 3C")
+    tally_3C.filters = [mesh_filter_3C]
+    tally_3C.scores = ['flux']
+    tally_3C.estimator = estimator
 
     # Instantiate a Tallies collection and export to XML
-    tallies = openmc.Tallies([tally])
+    tallies = openmc.Tallies([tally_3A, tally_3B, tally_3C])
 
     ###############################################################################
     #                   Exporting to OpenMC plots.xml file
