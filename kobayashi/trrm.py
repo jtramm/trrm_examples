@@ -115,15 +115,15 @@ def create_random_ray_model():
     shield_lattice.pitch = pitch
     shield_lattice.universes = fill_3d_list(n, aub)
     
-    source_lattice_cell = openmc.Cell(fill=source_lattice)
+    source_lattice_cell = openmc.Cell(fill=source_lattice, name='source lattice cell')
     su = openmc.Universe()
     su.add_cells([source_lattice_cell])
     
-    void_lattice_cell = openmc.Cell(fill=void_lattice)
+    void_lattice_cell = openmc.Cell(fill=void_lattice, name='void lattice cell')
     vu = openmc.Universe()
     vu.add_cells([void_lattice_cell])
     
-    shield_lattice_cell = openmc.Cell(fill=shield_lattice)
+    shield_lattice_cell = openmc.Cell(fill=shield_lattice, name='shield lattice cell')
     au = openmc.Universe()
     au.add_cells([shield_lattice_cell])
 
@@ -202,7 +202,7 @@ def create_random_ray_model():
     lattice.pitch = [x/x_dim, y/y_dim, z/z_dim]
     lattice.universes = dogleg_pattern
     
-    lattice_cell = openmc.Cell(fill=lattice)
+    lattice_cell = openmc.Cell(fill=lattice, name='dogleg lattice cell')
 
     lattice_uni = openmc.Universe()
     lattice_uni.add_cells([lattice_cell])
@@ -230,8 +230,8 @@ def create_random_ray_model():
     # Instantiate a Settings object, set all runtime parameters, and export to XML
     settings = openmc.Settings()
     settings.energy_mode = "multi-group"
-    settings.batches = 1000
-    settings.inactive = 500
+    settings.batches = 40
+    settings.inactive = 20
     settings.particles = 10000
     settings.run_mode = 'fixed source'
 
@@ -250,7 +250,11 @@ def create_random_ray_model():
     midpoints = [100.0]
     energy_distribution = openmc.stats.Discrete(x=midpoints,p=strengths)
     
-    source = openmc.IndependentSource(energy=energy_distribution, domains=[source_mat], strength=1.0) # works
+    #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_mat], strength=1.0) # works
+    #source = openmc.IndependentSource(energy=energy_distribution, domains=[sub], strength=1.0) # works
+    #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_cell], strength=1.0) # Material-filled cell
+    source = openmc.IndependentSource(energy=energy_distribution, domains=[source_lattice_cell], strength=1.0) # Higher level cell
+    #source = openmc.IndependentSource(energy=energy_distribution, domains=[full_domain], strength=1.0) # Highest level cell (making entire domain a source)
     
     settings.source = [source, rr_source]
     #settings.export_to_xml()
@@ -259,22 +263,63 @@ def create_random_ray_model():
     # Define tallies
 
     # Create a mesh that will be used for tallying
-    mesh = openmc.RegularMesh()
-    mesh.dimension = (x_dim, y_dim, z_dim)
-    mesh.lower_left = (0.0, 0.0, 0.0)
-    mesh.upper_right = (x, y, z)
+    #mesh = openmc.RegularMesh()
+    #mesh.dimension = (x_dim, y_dim, z_dim)
+    #mesh.lower_left = (0.0, 0.0, 0.0)
+    #mesh.upper_right = (x, y, z)
 
     # Create a mesh filter that can be used in a tally
-    mesh_filter = openmc.MeshFilter(mesh)
+    #mesh_filter = openmc.MeshFilter(mesh)
 
     # Now use the mesh filter in a tally and indicate what scores are desired
-    tally = openmc.Tally(name="Mesh tally")
-    tally.filters = [mesh_filter]
-    tally.scores = ['flux']
-    tally.estimator = 'analog'
+    #tally = openmc.Tally(name="Mesh tally")
+    #tally.filters = [mesh_filter]
+    #tally.scores = ['flux']
+    #tally.estimator = 'analog'
 
     # Instantiate a Tallies collection and export to XML
-    tallies = openmc.Tallies([tally])
+    #tallies = openmc.Tallies([tally])
+    
+    estimator = 'analog'
+
+    # Case 3A
+    mesh_3A = openmc.RegularMesh()
+    mesh_3A.dimension = (1, y_dim, 1)
+    mesh_3A.lower_left = (0.0, 0.0, 0.0)
+    mesh_3A.upper_right = (10.0, y, 10.0)
+    mesh_filter_3A = openmc.MeshFilter(mesh_3A)
+    
+    tally_3A = openmc.Tally(name="Case 3A")
+    tally_3A.filters = [mesh_filter_3A]
+    tally_3A.scores = ['flux']
+    tally_3A.estimator = estimator
+    
+    # Case 3B
+    mesh_3B = openmc.RegularMesh()
+    mesh_3B.dimension = (x_dim, 1, 1)
+    mesh_3B.lower_left = (0.0, 50.0, 0.0)
+    mesh_3B.upper_right = (x, 60.0, 10.0)
+    mesh_filter_3B = openmc.MeshFilter(mesh_3B)
+    
+    tally_3B = openmc.Tally(name="Case 3B")
+    tally_3B.filters = [mesh_filter_3B]
+    tally_3B.scores = ['flux']
+    tally_3B.estimator = estimator
+    
+    # Case 3C
+    mesh_3C = openmc.RegularMesh()
+    mesh_3C.dimension = (x_dim, 1, 1)
+    mesh_3C.lower_left = (0.0, 90.0, 30.0)
+    mesh_3C.upper_right = (x, 100.0, 40.0)
+    mesh_filter_3C = openmc.MeshFilter(mesh_3C)
+    
+    tally_3C = openmc.Tally(name="Case 3C")
+    tally_3C.filters = [mesh_filter_3C]
+    tally_3C.scores = ['flux']
+    tally_3C.estimator = estimator
+
+    # Instantiate a Tallies collection and export to XML
+    tallies = openmc.Tallies([tally_3A, tally_3B, tally_3C])
 
     ###############################################################################
     #                   Exporting to OpenMC plots.xml file
