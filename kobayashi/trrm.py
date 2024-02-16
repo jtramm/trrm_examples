@@ -95,7 +95,7 @@ def create_random_ray_model():
     
     # n controls the dimension of subdivision within each outer lattice element
     # E.g., n = 10 results in 1cm cubic FSRs
-    n = 10
+    n = 2
     delta = 10.0 / n
     ll = [-5.0, -5.0, -5.0]
     pitch = [delta, delta, delta]
@@ -230,8 +230,8 @@ def create_random_ray_model():
     # Instantiate a Settings object, set all runtime parameters, and export to XML
     settings = openmc.Settings()
     settings.energy_mode = "multi-group"
-    settings.batches = 40
-    settings.inactive = 20
+    settings.batches = 1000
+    settings.inactive = 500
     settings.particles = 10000
     settings.run_mode = 'fixed source'
 
@@ -250,11 +250,17 @@ def create_random_ray_model():
     midpoints = [100.0]
     energy_distribution = openmc.stats.Discrete(x=midpoints,p=strengths)
     
-    #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_mat], strength=1.0) # works
-    #source = openmc.IndependentSource(energy=energy_distribution, domains=[sub], strength=1.0) # works
+    source = openmc.IndependentSource(energy=energy_distribution, domains=[source_mat], strength=1.0) # base source material
+    #source = openmc.IndependentSource(energy=energy_distribution, domains=[sub], strength=1.0) # universe containing source cell
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_cell], strength=1.0) # Material-filled cell
-    source = openmc.IndependentSource(energy=energy_distribution, domains=[source_lattice_cell], strength=1.0) # Higher level cell
+    #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_lattice_cell], strength=1.0) # Higher level cell
+    
+    #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_lattice], strength=1.0) # Lattice (BAD)
+
+
+    # These are full problem sources
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[full_domain], strength=1.0) # Highest level cell (making entire domain a source)
+    #source = openmc.IndependentSource(energy=energy_distribution, domains=[root], strength=1.0) # Root Universe
     
     settings.source = [source, rr_source]
     #settings.export_to_xml()
@@ -280,7 +286,7 @@ def create_random_ray_model():
     # Instantiate a Tallies collection and export to XML
     #tallies = openmc.Tallies([tally])
     
-    estimator = 'analog'
+    estimator = 'tracklength'
 
     # Case 3A
     mesh_3A = openmc.RegularMesh()
