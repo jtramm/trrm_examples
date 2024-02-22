@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<geometry>
+  <cell id="1" material="1" name="UO2" region="-1" universe="1"/>
+  <cell id="2" material="2" name="MOX 4.3%" region="-1" universe="2"/>
+  <cell id="3" material="3" name="MOX 7.0%" region="-1" universe="3"/>
+  <cell id="4" material="4" name="MOX 8.7%" region="-1" universe="4"/>
+  <cell id="5" material="5" name="Fission Chamber" region="-1" universe="5"/>
+  <cell id="6" material="6" name="Guide Tube" region="-1" universe="6"/>
+  <cell id="7" material="7" name="Reflector" universe="8"/>
+  <cell id="9" material="7" name="UO2 Moderator" region="1" universe="1"/>
+  <cell id="10" material="7" name="MOX 4.3% Moderator" region="1" universe="2"/>
+  <cell id="11" material="7" name="MOX 7.0% Moderator" region="1" universe="3"/>
+  <cell id="12" material="7" name="MOX 8.7% Moderator" region="1" universe="4"/>
+  <cell id="13" material="7" name="Fission Chamber Moderator" region="1" universe="5"/>
+  <cell id="14" material="7" name="Guide Tube Moderator" region="1" universe="6"/>
+  <cell fill="101" id="16" name="UO2 Unrodded Assembly" universe="9"/>
+  <cell fill="103" id="18" name="MOX Unrodded Assembly" universe="11"/>
+  <cell fill="105" id="20" name="Water Unrodded Assembly" universe="13"/>
+  <cell fill="201" id="22" name="Core" region="2 4 -3 -5" universe="0"/>
+  <lattice id="101" name="UO2 Unrodded Assembly">
+    <pitch>1.26 1.26</pitch>
+    <dimension>17 17</dimension>
+    <lower_left>-10.71 -10.71</lower_left>
+    <universes>
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 6 1 1 6 1 1 6 1 1 1 1 1 
+1 1 1 6 1 1 1 1 1 1 1 1 1 6 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 6 1 1 6 1 1 6 1 1 6 1 1 6 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 6 1 1 6 1 1 5 1 1 6 1 1 6 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 6 1 1 6 1 1 6 1 1 6 1 1 6 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 6 1 1 1 1 1 1 1 1 1 6 1 1 1 
+1 1 1 1 1 6 1 1 6 1 1 6 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </universes>
+  </lattice>
+  <lattice id="103" name="MOX Unrodded Assembly">
+    <pitch>1.26 1.26</pitch>
+    <dimension>17 17</dimension>
+    <lower_left>-10.71 -10.71</lower_left>
+    <universes>
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 
+2 3 3 3 3 6 3 3 6 3 3 6 3 3 3 3 2 
+2 3 3 6 3 4 4 4 4 4 4 4 3 6 3 3 2 
+2 3 3 3 4 4 4 4 4 4 4 4 4 3 3 3 2 
+2 3 6 4 4 6 4 4 6 4 4 6 4 4 6 3 2 
+2 3 3 4 4 4 4 4 4 4 4 4 4 4 3 3 2 
+2 3 3 4 4 4 4 4 4 4 4 4 4 4 3 3 2 
+2 3 6 4 4 6 4 4 5 4 4 6 4 4 6 3 2 
+2 3 3 4 4 4 4 4 4 4 4 4 4 4 3 3 2 
+2 3 3 4 4 4 4 4 4 4 4 4 4 4 3 3 2 
+2 3 6 4 4 6 4 4 6 4 4 6 4 4 6 3 2 
+2 3 3 3 4 4 4 4 4 4 4 4 4 3 3 3 2 
+2 3 3 6 3 4 4 4 4 4 4 4 3 6 3 3 2 
+2 3 3 3 3 6 3 3 6 3 3 6 3 3 3 3 2 
+2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 </universes>
+  </lattice>
+  <lattice id="105" name="Reflector Unrodded Assembly">
+    <pitch>21.42 21.42</pitch>
+    <dimension>1 1</dimension>
+    <lower_left>-10.71 -10.71</lower_left>
+    <universes>
+8 </universes>
+  </lattice>
+  <lattice id="201" name="3x3 core lattice">
+    <pitch>21.42 21.42</pitch>
+    <dimension>3 3</dimension>
+    <lower_left>-32.13 -32.13</lower_left>
+    <universes>
+9 11 13 
+11 9 13 
+13 13 13 </universes>
+  </lattice>
+  <surface coeffs="0 0 0.54" id="1" name="Pin Cell ZCylinder" type="z-cylinder"/>
+  <surface boundary="reflective" coeffs="-32.13" id="2" name="Core x-min" type="x-plane"/>
+  <surface boundary="vacuum" coeffs="32.13" id="3" name="Core x-max" type="x-plane"/>
+  <surface boundary="vacuum" coeffs="-32.13" id="4" name="Core y-min" type="y-plane"/>
+  <surface boundary="reflective" coeffs="32.13" id="5" name="Core y-max" type="y-plane"/>
+</geometry>

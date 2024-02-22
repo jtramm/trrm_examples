@@ -95,7 +95,7 @@ def create_random_ray_model():
     
     # n controls the dimension of subdivision within each outer lattice element
     # E.g., n = 10 results in 1cm cubic FSRs
-    n = 2
+    n = 10
     delta = 10.0 / n
     ll = [-5.0, -5.0, -5.0]
     pitch = [delta, delta, delta]
@@ -226,24 +226,23 @@ def create_random_ray_model():
 
     ###############################################################################
     # Define problem settings
-
-    # Instantiate a Settings object, set all runtime parameters, and export to XML
-    settings = openmc.Settings()
-    settings.energy_mode = "multi-group"
-    settings.batches = 1000
-    settings.inactive = 500
-    settings.particles = 10000
-    settings.run_mode = 'fixed source'
-
-    settings.random_ray_distance_active = 400.0
-    settings.random_ray_distance_inactive = 100.0
-    settings.solver_type = 'random ray'
-
+    
     # Create an initial uniform spatial source for ray integration
     lower_left = (0.0, 0.0, 0.0)
     upper_right = (x, y, z)
     uniform_dist = openmc.stats.Box(lower_left, upper_right, only_fissionable=False)
-    rr_source = openmc.IndependentSource(space=uniform_dist, particle="random_ray")
+    rr_source = openmc.IndependentSource(space=uniform_dist)
+
+    # Instantiate a Settings object, set all runtime parameters, and export to XML
+    settings = openmc.Settings()
+    settings.energy_mode = "multi-group"
+    settings.batches = 10
+    settings.inactive = 5
+    settings.particles = 1000
+    settings.run_mode = 'fixed source'
+    settings.random_ray['distance_active'] = 400.0
+    settings.random_ray['distance_inactive'] = 100.0
+    settings.random_ray['ray_source'] = rr_source
     
     # Create the neutron source in the bottom right of the moderator
     strengths = [1.0] # Good - fast group appears largest (besides most thermal)
@@ -262,7 +261,7 @@ def create_random_ray_model():
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[full_domain], strength=1.0) # Highest level cell (making entire domain a source)
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[root], strength=1.0) # Root Universe
     
-    settings.source = [source, rr_source]
+    settings.source = [source]
     #settings.export_to_xml()
 
     ###############################################################################

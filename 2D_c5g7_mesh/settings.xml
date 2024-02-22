@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<settings>
+  <run_mode>eigenvalue</run_mode>
+  <particles>1900</particles>
+  <batches>1000</batches>
+  <inactive>600</inactive>
+  <output>
+    <summary>true</summary>
+    <tallies>true</tallies>
+  </output>
+  <energy_mode>multi-group</energy_mode>
+  <random_ray>
+    <distance_active>400.0</distance_active>
+    <distance_inactive>40.0</distance_inactive>
+    <source particle="neutron" strength="1.0" type="independent">
+      <space type="box">
+        <parameters>-32.13 -32.13 -1.0 32.13 32.13 1.0</parameters>
+      </space>
+    </source>
+    <mesh id="2">
+      <dimension>408 408 1</dimension>
+      <lower_left>-32.13 -32.13 -1e+50</lower_left>
+      <upper_right>32.13 32.13 1e+50</upper_right>
+      <domain_type>universe</domain_type>
+      <domain_ids>0</domain_ids>
+    </mesh>
+  </random_ray>
+</settings>

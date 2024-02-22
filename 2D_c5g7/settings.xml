@@ -3,15 +3,17 @@
   <run_mode>eigenvalue</run_mode>
   <solver_type>random ray</solver_type>
   <particles>1750</particles>
-  <random_ray_distance_active>220.0</random_ray_distance_active>
-  <random_ray_distance_inactive>20.0</random_ray_distance_inactive>
-  <batches>1400</batches>
-  <inactive>600</inactive>
-  <source strength="1.0" particle="random_ray">
-    <space type="box">
-      <parameters>-32.13 -32.13 -32.13 32.13 32.13 32.13</parameters>
-    </space>
-  </source>
+  <random_ray>
+    <distance_active>220.0</distance_active>
+    <distance_inactive>20.0</distance_inactive>
+    <source particle="neutron" strength="1.0" type="independent">
+      <space type="box">
+        <parameters>-32.13 -32.13 -32.13 32.13 32.13 32.13</parameters>
+      </space>
+    </source>
+  </random_ray>
+  <batches>20</batches>
+  <inactive>10</inactive>
   <output>
     <summary>false</summary>
     <tallies>true</tallies>

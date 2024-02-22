@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<materials>
+  <cross_sections>mgxs.h5</cross_sections>
+  <material id="1" name="UO2">
+    <density units="macro" value="1.0"/>
+    <macroscopic name="uo2"/>
+  </material>
+  <material id="2" name="MOX 4.3%">
+    <density units="macro" value="1.0"/>
+    <macroscopic name="mox43"/>
+  </material>
+  <material id="3" name="MOX 7.0%">
+    <density units="macro" value="1.0"/>
+    <macroscopic name="mox7"/>
+  </material>
+  <material id="4" name="MOX 8.7%">
+    <density units="macro" value="1.0"/>
+    <macroscopic name="mox87"/>
+  </material>
+  <material id="5" name="Fission Chamber">
+    <density units="macro" value="1.0"/>
+    <macroscopic name="fiss_chamber"/>
+  </material>
+  <material id="6" name="Guide Tube">
+    <density units="macro" value="1.0"/>
+    <macroscopic name="guide_tube"/>
+  </material>
+  <material id="7" name="Water">
+    <density units="macro" value="1.0"/>
+    <macroscopic name="water"/>
+  </material>
+  <material id="8" name="Control Rod">
+    <density units="macro" value="1.0"/>
+    <macroscopic name="control_rod"/>
+  </material>
+</materials>
