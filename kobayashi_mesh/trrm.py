@@ -2,19 +2,6 @@ import numpy as np
 
 import openmc
 
-def fill_3d_list(n, val):
-    """
-    Generates a 3D list of dimensions nxnxn filled with copies of val.
-
-    Parameters:
-    n (int): The dimension of the 3D list.
-    val (any): The value to fill the 3D list with.
-
-    Returns:
-    list: A 3D list of dimensions nxnxn filled with val.
-    """
-    return [[[val for _ in range(n)] for _ in range(n)] for _ in range(n)]
-
 def create_random_ray_model():
     ###############################################################################
     # Create multigroup data
@@ -84,48 +71,14 @@ def create_random_ray_model():
     void_cell = openmc.Cell(fill=void_mat, name='infinite void region')
     shield_cell = openmc.Cell(fill=shield_mat, name='infinite shield region')
     
-    sub = openmc.Universe()
-    sub.add_cells([source_cell])
-    
-    vub = openmc.Universe()
-    vub.add_cells([void_cell])
-    
-    aub = openmc.Universe()
-    aub.add_cells([shield_cell])
-    
-    # n controls the dimension of subdivision within each outer lattice element
-    # E.g., n = 10 results in 1cm cubic FSRs
-    n = 10
-    delta = 10.0 / n
-    ll = [-5.0, -5.0, -5.0]
-    pitch = [delta, delta, delta]
-
-    source_lattice = openmc.RectLattice()
-    source_lattice.lower_left = ll
-    source_lattice.pitch = pitch
-    source_lattice.universes = fill_3d_list(n, sub)
-    
-    void_lattice = openmc.RectLattice()
-    void_lattice.lower_left = ll
-    void_lattice.pitch = pitch
-    void_lattice.universes = fill_3d_list(n, vub)
-    
-    shield_lattice = openmc.RectLattice()
-    shield_lattice.lower_left = ll
-    shield_lattice.pitch = pitch
-    shield_lattice.universes = fill_3d_list(n, aub)
-    
-    source_lattice_cell = openmc.Cell(fill=source_lattice, name='source lattice cell')
     su = openmc.Universe()
-    su.add_cells([source_lattice_cell])
+    su.add_cells([source_cell])
     
-    void_lattice_cell = openmc.Cell(fill=void_lattice, name='void lattice cell')
     vu = openmc.Universe()
-    vu.add_cells([void_lattice_cell])
+    vu.add_cells([void_cell])
     
-    shield_lattice_cell = openmc.Cell(fill=shield_lattice, name='shield lattice cell')
     au = openmc.Universe()
-    au.add_cells([shield_lattice_cell])
+    au.add_cells([shield_cell])
 
     z_base = [
             [au, au, au, au, au, au],
@@ -232,17 +185,25 @@ def create_random_ray_model():
     upper_right = (x, y, z)
     uniform_dist = openmc.stats.Box(lower_left, upper_right, only_fissionable=False)
     rr_source = openmc.IndependentSource(space=uniform_dist)
+    
+    dim = 10
+    divide_mesh = openmc.RegularMesh(domains=[root])
+    divide_mesh.dimension = (dim * x_dim, dim * y_dim, dim * z_dim)
+    divide_mesh.lower_left = (0.0, 0.0, 0.0)
+    divide_mesh.upper_right = (x, y, z)
 
     # Instantiate a Settings object, set all runtime parameters, and export to XML
     settings = openmc.Settings()
     settings.energy_mode = "multi-group"
-    settings.batches = 200
-    settings.inactive = 100
+    settings.batches = 100
+    settings.inactive = 50
     settings.particles = 10000
     settings.run_mode = 'fixed source'
     settings.random_ray['distance_active'] = 400.0
-    settings.random_ray['distance_inactive'] = 100.0
+    settings.random_ray['distance_inactive'] = 200.0
     settings.random_ray['ray_source'] = rr_source
+    settings.random_ray['meshes'] = [divide_mesh]
+    
     
     # Create the neutron source in the bottom right of the moderator
     strengths = [1.0] # Good - fast group appears largest (besides most thermal)

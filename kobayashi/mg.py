@@ -185,8 +185,8 @@ def create_random_ray_model():
     settings = openmc.Settings()
     settings.energy_mode = "multi-group"
     settings.batches = 100
-    settings.inactive = 50
-    settings.particles = 100000
+    settings.inactive = 5
+    settings.particles = 1000000
     settings.run_mode = 'fixed source'
 
     #settings.random_ray_distance_active = 100.0
