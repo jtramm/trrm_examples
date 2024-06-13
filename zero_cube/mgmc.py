@@ -10,9 +10,9 @@ def fill_cube(N, n_1, n_2, fill_1, fill_2, fill_3):
     for i in range(N):
         for j in range(N):
             for k in range(N):
-                if i < n_1 or j < n_1 or k < n_1:
+                if i < n_1 and j >= (N-n_1) and k < n_1:
                     cube[i][j][k] = fill_1
-                elif (i >= n_1 and i < n_2) or (j >= n_1 and j < n_2) or (k >= n_1 and k < n_2):
+                elif i < n_2 and j >= (N-n_2) and k < n_2:
                     cube[i][j][k] = fill_2
                 else:
                     cube[i][j][k] = fill_3
@@ -149,9 +149,9 @@ geometry = openmc.Geometry(root)
 # Instantiate a Settings object, set all runtime parameters, and export to XML
 settings = openmc.Settings()
 settings.energy_mode = "multi-group"
-settings.batches = 25
+settings.batches = 100
 settings.inactive = 0
-settings.particles = 10000
+settings.particles = 100000
 settings.run_mode = 'fixed source'
 
 #settings.random_ray_distance_active = 100.0
