@@ -200,31 +200,38 @@ settings.source = [source]
 #tally.estimator = 'collision'
 #tally.estimator = 'analog'
 
-estimator = 'collision'
+estimator = 'tracklength'
 
-# Case 3A
-mesh_3A = openmc.RegularMesh()
-mesh_3A.dimension = (1, y_dim, 1)
-mesh_3A.lower_left = (0.0, 0.0, 0.0)
-mesh_3A.upper_right = (10.0, y, 10.0)
-mesh_filter_3A = openmc.MeshFilter(mesh_3A)
+absorber_filter = openmc.MaterialFilter(shield_mat)
+absorber_tally = openmc.Tally(name="Absorber Tally")
+absorber_tally.filters = [absorber_filter]
+absorber_tally.scores = ['flux']
+absorber_tally.estimator = estimator
 
-tally_3A = openmc.Tally(name="Case 3A")
-tally_3A.filters = [mesh_filter_3A]
-tally_3A.scores = ['flux']
-tally_3A.estimator = estimator
+void_filter = openmc.MaterialFilter(void_mat)
+void_tally = openmc.Tally(name="Void Tally")
+void_tally.filters = [void_filter]
+void_tally.scores = ['flux']
+void_tally.estimator = estimator
+
+source_filter = openmc.MaterialFilter(source_mat)
+source_tally = openmc.Tally(name="Source Tally")
+source_tally.filters = [source_filter]
+source_tally.scores = ['flux']
+source_tally.estimator = estimator
+
 
 # Instantiate a Tallies collection and export to XML
-tallies = openmc.Tallies([tally_3A, tally_3B, tally_3C])
+tallies = openmc.Tallies([source_tally, void_tally, absorber_tally])
 
 ###############################################################################
 #                   Exporting to OpenMC plots.xml file
 ###############################################################################
 
 plot = openmc.Plot()
-plot.origin = [x/2.0, y/2.0, z/2.0]
-plot.width = [x, y, z]
-plot.pixels = [60, 100, 60]
+plot.origin = [absorber_width/2.0, absorber_width/2.0, absorber_width/2.0]
+plot.width = [absorber_width, absorber_width, absorber_width]
+plot.pixels = [n, n, n]
 plot.type = 'voxel'
 
 # Instantiate a Plots collection and export to XML
