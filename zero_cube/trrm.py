@@ -2,6 +2,17 @@ import numpy as np
 
 import openmc
 
+def print_dimensions(cube):
+    # Check if the cube is not empty and has consistent dimensions
+    if cube and all(isinstance(i, list) for i in cube):
+        dim1 = len(cube)
+        dim2 = len(cube[0]) if cube[0] and all(isinstance(j, list) for j in cube[0]) else 0
+        # The check for dim3 should not check if the elements are lists but rather count their number if the second dimension is non-empty
+        dim3 = len(cube[0][0]) if dim2 > 0 and cube[0][0] is not None else 0
+        print(f"The dimensions of the cube are {dim1} x {dim2} x {dim3}")
+    else:
+        print("The provided cube is empty or has inconsistent dimensions.")
+
 def fill_cube(N, n_1, n_2, fill_1, fill_2, fill_3):
     # Create an empty NxNxN cube as a list of lists of lists
     cube = [[[0 for _ in range(N)] for _ in range(N)] for _ in range(N)]
@@ -10,13 +21,14 @@ def fill_cube(N, n_1, n_2, fill_1, fill_2, fill_3):
     for i in range(N):
         for j in range(N):
             for k in range(N):
-                if i < n_1 or j < n_1 or k < n_1:
+                if i < n_1 and j < n_1 and k < n_1:
                     cube[i][j][k] = fill_1
-                elif (i >= n_1 and i < n_2) or (j >= n_1 and j < n_2) or (k >= n_1 and k < n_2):
+                elif i < n_2 and j < n_2 and k < n_2:
                     cube[i][j][k] = fill_2
                 else:
                     cube[i][j][k] = fill_3
 
+    print_dimensions(cube)
     return cube
 
 ###############################################################################
@@ -42,7 +54,7 @@ absorber_mat_data.set_total([absorber_sigma_a + absorber_sigma_s])
 absorber_mat_data.set_absorption([absorber_sigma_a])
 absorber_mat_data.set_scatter_matrix(np.rollaxis(np.array([[[absorber_sigma_s]]]),0,3))
 
-multiplier = 1.0
+multiplier = 100.0
 source_sigma_a = void_sigma_a * multiplier
 source_sigma_s = void_sigma_s * multiplier
 source_mat_data = openmc.XSdata('source', groups)
@@ -108,11 +120,11 @@ absorber_width = 30.0
 n_base = 6
 
 # This variable can be increased above 1 to refine the FSR mesh resolution further
-refinement_level = 1
+refinement_level = 5
 
 n = n_base * refinement_level
 pitch = absorber_width / n
-print(f"pitch = {pitch}")
+print(f"pitch = {pitch} n = {n}")
 
 pattern = fill_cube(n, 1*refinement_level, 5*refinement_level, source_universe, void_universe, absorber_universe)
 
@@ -120,6 +132,7 @@ lattice = openmc.RectLattice()
 lattice.lower_left = [0.0, 0.0, 0.0]
 lattice.pitch = [pitch, pitch, pitch]
 lattice.universes = pattern
+print(lattice)
 
 lattice_cell = openmc.Cell(fill=lattice)
 
@@ -170,12 +183,7 @@ strengths = [1.0] # Good - fast group appears largest (besides most thermal)
 midpoints = [100.0]
 energy_distribution = openmc.stats.Discrete(x=midpoints,p=strengths)
 
-lower_left_src = [0.0, 0.0, 0.0]
-upper_right_src = [source_width, source_width, source_width]
-spatial_distribution = openmc.stats.Box(lower_left_src, upper_right_src, only_fissionable=False)
-
-#source = openmc.IndependentSource(energy=energy_distribution, domains=[source_mat], strength=2.0) # works
-source = openmc.IndependentSource(energy=energy_distribution, constraints={'domains':[source_mat]}, strength=1.0) # works
+source = openmc.IndependentSource(energy=energy_distribution, constraints={'domains':[source_universe]}, strength=1.0)
 
 #settings.source = [source, rr_source]
 settings.source = [source]
@@ -231,7 +239,7 @@ tallies = openmc.Tallies([source_tally, void_tally, absorber_tally])
 plot = openmc.Plot()
 plot.origin = [absorber_width/2.0, absorber_width/2.0, absorber_width/2.0]
 plot.width = [absorber_width, absorber_width, absorber_width]
-plot.pixels = [n, n, n]
+plot.pixels = [n*5, n*5, n*5]
 plot.type = 'voxel'
 
 # Instantiate a Plots collection and export to XML
