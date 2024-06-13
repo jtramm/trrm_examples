@@ -26,33 +26,33 @@ def fill_cube(N, n_1, n_2, fill_1, fill_2, fill_3):
 ebins = [1e-5, 20.0e6]
 groups = openmc.mgxs.EnergyGroups(group_edges=ebins)
 
-# High scattering ratio means system is all scattering
-# Low means fully absorbing
-scattering_ratio = 0.5
-
-source_total_xs = 0.1
-source_mat_data = openmc.XSdata('source', groups)
-source_mat_data.order = 0
-source_mat_data.set_total([source_total_xs])
-source_mat_data.set_absorption([source_total_xs * (1.0 - scattering_ratio)])
-source_mat_data.set_scatter_matrix(np.rollaxis(np.array([[[source_total_xs * scattering_ratio]]]),0,3))
-
-void_total_xs = 1.0e-4
+void_sigma_a = 4.0e-6
+void_sigma_s = 3.0e-4
 void_mat_data = openmc.XSdata('void', groups)
 void_mat_data.order = 0
-void_mat_data.set_total([void_total_xs])
-void_mat_data.set_absorption([void_total_xs * (1.0 - scattering_ratio)])
-void_mat_data.set_scatter_matrix(np.rollaxis(np.array([[[void_total_xs * scattering_ratio]]]),0,3))
+void_mat_data.set_total([void_sigma_a + void_sigma_s])
+void_mat_data.set_absorption([void_sigma_a])
+void_mat_data.set_scatter_matrix(np.rollaxis(np.array([[[void_sigma_s]]]),0,3))
 
-shield_total_xs = 0.1
-shield_mat_data = openmc.XSdata('shield', groups)
-shield_mat_data.order = 0
-shield_mat_data.set_total([shield_total_xs])
-shield_mat_data.set_absorption([shield_total_xs * (1.0 - scattering_ratio)])
-shield_mat_data.set_scatter_matrix(np.rollaxis(np.array([[[shield_total_xs * scattering_ratio]]]),0,3))
+absorber_sigma_a = 0.75
+absorber_sigma_s = 0.25
+absorber_mat_data = openmc.XSdata('absorber', groups)
+absorber_mat_data.order = 0
+absorber_mat_data.set_total([absorber_sigma_a + absorber_sigma_s])
+absorber_mat_data.set_absorption([absorber_sigma_a])
+absorber_mat_data.set_scatter_matrix(np.rollaxis(np.array([[[absorber_sigma_s]]]),0,3))
+
+multiplier = 1.0
+source_sigma_a = void_sigma_a * multiplier
+source_sigma_s = void_sigma_s * multiplier
+source_mat_data = openmc.XSdata('source', groups)
+source_mat_data.order = 0
+source_mat_data.set_total([source_sigma_a + source_sigma_s])
+source_mat_data.set_absorption([source_sigma_a])
+source_mat_data.set_scatter_matrix(np.rollaxis(np.array([[[source_sigma_s]]]),0,3))
 
 mg_cross_sections_file = openmc.MGXSLibrary(groups)
-mg_cross_sections_file.add_xsdatas([source_mat_data, void_mat_data, shield_mat_data])
+mg_cross_sections_file.add_xsdatas([source_mat_data, void_mat_data, absorber_mat_data])
 mg_cross_sections_file.export_to_hdf5()
 
 ###############################################################################
@@ -61,7 +61,7 @@ mg_cross_sections_file.export_to_hdf5()
 # Instantiate some Macroscopic Data
 source_data = openmc.Macroscopic('source')
 void_data   = openmc.Macroscopic('void')
-shield_data = openmc.Macroscopic('shield')
+absorber_data = openmc.Macroscopic('absorber')
 
 # Instantiate some Materials and register the appropriate Macroscopic objects
 source_mat = openmc.Material(name='source')
@@ -72,12 +72,12 @@ void_mat = openmc.Material(name='void')
 void_mat.set_density('macro', 1.0)
 void_mat.add_macroscopic(void_data)
 
-shield_mat = openmc.Material(name='shield')
-shield_mat.set_density('macro', 1.0)
-shield_mat.add_macroscopic(shield_data)
+absorber_mat = openmc.Material(name='absorber')
+absorber_mat.set_density('macro', 1.0)
+absorber_mat.add_macroscopic(absorber_data)
 
 # Instantiate a Materials collection and export to XML
-materials_file = openmc.Materials([source_mat, void_mat, shield_mat])
+materials_file = openmc.Materials([source_mat, void_mat, absorber_mat])
 materials_file.cross_sections = "mgxs.h5"
 
 ###############################################################################
@@ -88,7 +88,7 @@ materials_file.cross_sections = "mgxs.h5"
 
 source_cell = openmc.Cell(fill=source_mat, name='infinite source region')
 void_cell = openmc.Cell(fill=void_mat, name='infinite void region')
-shield_cell = openmc.Cell(fill=shield_mat, name='infinite shield region')
+absorber_cell = openmc.Cell(fill=absorber_mat, name='infinite absorber region')
 
 source_universe = openmc.Universe()
 source_universe.add_cells([source_cell])
@@ -97,7 +97,7 @@ void_universe = openmc.Universe()
 void_universe.add_cells([void_cell])
 
 absorber_universe = openmc.Universe()
-absorber_universe.add_cells([shield_cell])
+absorber_universe.add_cells([absorber_cell])
 
 # Here we define the 3D lattice pattern that will be used
 
@@ -202,7 +202,7 @@ settings.source = [source]
 
 estimator = 'tracklength'
 
-absorber_filter = openmc.MaterialFilter(shield_mat)
+absorber_filter = openmc.MaterialFilter(absorber_mat)
 absorber_tally = openmc.Tally(name="Absorber Tally")
 absorber_tally.filters = [absorber_filter]
 absorber_tally.scores = ['flux']
