@@ -2,7 +2,7 @@ import openmc
 import openmc.mgxs
 import numpy as np
 
-def pinmaker(inner_fill, outer_fill, num_sectors):
+def pinmaker_og(inner_fill, outer_fill, num_sectors):
 
     # example input radii
     ring_radii = [0.241, 0.341, 0.418, 0.482, 0.54, 0.572, 0.612, 0.694, 0.786]
@@ -46,6 +46,44 @@ def pinmaker(inner_fill, outer_fill, num_sectors):
     pincell = openmc.Universe(cells=azimuthal_cells)
 
     return pincell
+
+def pinmaker(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer):
+    # Example input radii
+    ring_radii = [0.241, 0.341, 0.418, 0.482, 0.54, 0.572, 0.612, 0.694, 0.786]
+    # Determine which fills to use for each ring
+    fills = [inner_fill] * 5 + [outer_fill] * 5
+    # Determine the number of sectors for each ring based on the fill
+    num_sectors = [num_sectors_inner] * 5 + [num_sectors_outer] * 5
+
+    pincell_base = openmc.Universe()
+    azimuthal_cells = []
+
+    for r in range(len(ring_radii) + 1):
+        if r == 0:
+            outer_bound = openmc.ZCylinder(r=ring_radii[r])
+            region = -outer_bound
+        elif r == len(ring_radii):
+            inner_bound = openmc.ZCylinder(r=ring_radii[r-1])
+            region = +inner_bound
+        else:
+            inner_bound = openmc.ZCylinder(r=ring_radii[r-1])
+            outer_bound = openmc.ZCylinder(r=ring_radii[r])
+            region = +inner_bound & -outer_bound
+        
+        # Create sectors within each region
+        azimuthal_planes = []
+        for j in range(num_sectors[r]):
+            angle = 2 * j * openmc.pi / num_sectors[r]
+            normal_vector = (-openmc.sin(angle), openmc.cos(angle), 0)
+            azimuthal_planes.append(openmc.Plane(a=normal_vector[0], b=normal_vector[1], c=normal_vector[2], d=0))
+
+        for j in range(num_sectors[r]):
+            sector_region = +azimuthal_planes[j] & -azimuthal_planes[(j+1) % num_sectors[r]]
+            cell = openmc.Cell(fill=fills[r], region=region & sector_region)
+            pincell_base.add_cell(cell)
+
+    return pincell_base
+
 
 ###############################################################################
 #                      Simulation Input File Parameters
@@ -450,10 +488,11 @@ universes['Reflector Rodded Assembly']  .add_cell(cells['Reflector Rodded Assemb
 # Subdivided Pincells
 ###############################################################################
 
-num_sectors = 8
+num_sectors_fuel = 4
+num_sectors_mod = 8
 pins_to_make = ['UO2', 'MOX 4.3%', 'MOX 7.0%', 'MOX 8.7%', 'Fission Chamber', 'Guide Tube', 'Control Rod']
 for pin in pins_to_make:
-    universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors)
+    universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors_fuel,num_sectors_mod)
 
 ###############################################################################
 #                     Create a dictionary of the assembly lattices
@@ -636,6 +675,7 @@ cells['Core'].fill = lattices['Core']
 # Instantiate a Geometry, register the root Universe, and export to XML
 geometry = openmc.Geometry()
 geometry.root_universe = universes['Root']
+geometry.remove_redundant_surfaces()
 
 ###############################################################################
 #                   Exporting to OpenMC settings.xml File
@@ -667,7 +707,7 @@ plot_1 = openmc.Plot(plot_id=1)
 plot_1.filename = 'plot_1'
 plot_1.origin = [0.0, 0.0, 0.0]
 plot_1.width = [64.26, 64.26, 1.0]
-plot_1.pixels = [5000, 5000, 1]
+plot_1.pixels = [4000, 4000, 1]
 plot_1.type = 'voxel'
 
 # Instantiate a Plots collection and export to XML
