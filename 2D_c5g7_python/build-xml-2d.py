@@ -2,6 +2,37 @@ import openmc
 import openmc.mgxs
 import numpy as np
 
+#########################
+# Subdivision variables
+#########################
+
+# This variable controls how many of the outer reflector region
+# pincell sizes regions will be subdivided into fine vs. coarse
+# levels of subdivision. I.e., a value of 0 means all will be coarse,
+# a value of 17 means all will be fine. Default flat source mesh
+# typically uses 11, such that the 11 innermost layers are fine.
+threshold = 11
+
+# This variable controls the moderator reflector region fine mesh
+# dimension. The default value is 5, which means the finer regions
+# near the core will be 5x5. The default for flat source C5G7
+# simulations is typically 5.
+fine_mod_dim = 10
+
+# This variable controls the moderator reflector region coarse mesh
+# dimension. The default value is 1, which means the coarser regions
+# near the outer reflector will be 1x1. The default for flat source
+# C5G7 simulations is typically 1.
+coarse_mod_dim = 1
+
+# This variable controls the number of azimuthal sectors in the
+# fuel and moderator regions. The default for flat source C5G7
+# simulations is typically 8.
+num_sectors_fuel = 8
+num_sectors_mod = 8
+
+
+
 def pinmaker_og(inner_fill, outer_fill, num_sectors):
 
     # example input radii
@@ -504,8 +535,7 @@ universes['Reflector Side']             .add_cell(cells['Reflector Side'])
 # Subdivided Pincells
 ###############################################################################
 
-num_sectors_fuel = 4
-num_sectors_mod = 8
+
 pins_to_make = ['UO2', 'MOX 4.3%', 'MOX 7.0%', 'MOX 8.7%', 'Fission Chamber', 'Guide Tube', 'Control Rod']
 for pin in pins_to_make:
     universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors_fuel,num_sectors_mod)
@@ -645,14 +675,14 @@ lattices['Reflector Unrodded Assembly'].universes = [[w]]
 
 # Subdivided reflectors
 
-fine_mod_dim = 5
+
 lattices['Reflector Fine'] = openmc.RectLattice()
 lattices['Reflector Fine'].dimension = [fine_mod_dim, fine_mod_dim]
 lattices['Reflector Fine'].lower_left = [-0.63, -0.63]
 lattices['Reflector Fine'].pitch = [1.26/fine_mod_dim, 1.26/fine_mod_dim] 
 lattices['Reflector Fine'].universes = [[w]*fine_mod_dim]*fine_mod_dim
 
-coarse_mod_dim = 1
+
 lattices['Reflector Coarse'] = openmc.RectLattice()
 lattices['Reflector Coarse'].dimension = [coarse_mod_dim, coarse_mod_dim]
 lattices['Reflector Coarse'].lower_left = [-0.63, -0.63]
