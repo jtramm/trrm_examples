@@ -14,10 +14,10 @@ import numpy as np
 threshold = 11
 
 # This variable controls the moderator reflector region fine mesh
-# dimension. The default value is 5, which means the finer regions
+# dimension. The default value is 10, which means the finer regions
 # near the core will be 5x5. The default for flat source C5G7
-# simulations is typically 5.
-fine_mod_dim = 2
+# simulations is typically 10.
+fine_mod_dim = 10
 
 # This variable controls the moderator reflector region coarse mesh
 # dimension. The default value is 1, which means the coarser regions
@@ -28,18 +28,21 @@ coarse_mod_dim = 1
 # Thes variables control the number of azimuthal sectors in the
 # fuel and moderator regions. The default for flat source C5G7
 # simulations is typically 8.
-num_sectors_fuel = 4
+num_sectors_fuel = 8
 num_sectors_mod = 8
 
 # These variables control the number of rings in the fuel and moderator.
 # Typical values for flat source C5G7 simulations are 3.
-num_rings_fuel = 1
-num_rings_mod = 1
+num_rings_fuel = 3
+num_rings_mod = 3
 
 # These values control the angle offset of the pincell azimthual sectors.
 # The default values are 0.0.
-inner_angle_offset = openmc.pi / 4.0
-outer_angle_offset = openmc.pi / 8.0
+#inner_angle_offset = openmc.pi / 4.0
+#outer_angle_offset = openmc.pi / 8.0
+
+inner_angle_offset = 0.0
+outer_angle_offset = 0.0
 
 #########################
 # End Subdivision variables
@@ -106,8 +109,8 @@ def pinmaker(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer, fuel_
 ###############################################################################
 
 # OpenMC simulation parameters
-batches = 100
-inactive = 50
+batches = 1000
+inactive = 600
 particles = 1500
 
 ###############################################################################
@@ -667,6 +670,7 @@ lattices['Reflector Fine'].dimension = [fine_mod_dim, fine_mod_dim]
 lattices['Reflector Fine'].lower_left = [-0.63, -0.63]
 lattices['Reflector Fine'].pitch = [1.26/fine_mod_dim, 1.26/fine_mod_dim] 
 lattices['Reflector Fine'].universes = [[w]*fine_mod_dim]*fine_mod_dim
+lattices['Reflector Fine'].outer = w
 
 
 lattices['Reflector Coarse'] = openmc.RectLattice()
@@ -674,6 +678,7 @@ lattices['Reflector Coarse'].dimension = [coarse_mod_dim, coarse_mod_dim]
 lattices['Reflector Coarse'].lower_left = [-0.63, -0.63]
 lattices['Reflector Coarse'].pitch = [1.26/coarse_mod_dim, 1.26/coarse_mod_dim]
 lattices['Reflector Coarse'].universes = [[w]*coarse_mod_dim]*coarse_mod_dim
+lattices['Reflector Coarse'].outer = w
 
 # Define the dimensions for the grid
 total_rows = 17
