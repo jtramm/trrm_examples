@@ -42,7 +42,7 @@ absorber_mat_data.set_total([absorber_sigma_a + absorber_sigma_s])
 absorber_mat_data.set_absorption([absorber_sigma_a])
 absorber_mat_data.set_scatter_matrix(np.rollaxis(np.array([[[absorber_sigma_s]]]),0,3))
 
-multiplier = 1.0
+multiplier = 100.0
 source_sigma_a = void_sigma_a * multiplier
 source_sigma_s = void_sigma_s * multiplier
 source_mat_data = openmc.XSdata('source', groups)
@@ -151,7 +151,7 @@ settings = openmc.Settings()
 settings.energy_mode = "multi-group"
 settings.batches = 100
 settings.inactive = 0
-settings.particles = 100000
+settings.particles = 1000000
 settings.run_mode = 'fixed source'
 
 #settings.random_ray_distance_active = 100.0

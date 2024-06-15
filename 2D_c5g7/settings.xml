@@ -11,9 +11,10 @@
         <parameters>-32.13 -32.13 -32.13 32.13 32.13 32.13</parameters>
       </space>
     </source>
+    <volume_estimator>segment_corrected</volume_estimator>
   </random_ray>
-  <batches>20</batches>
-  <inactive>10</inactive>
+  <batches>1000</batches>
+  <inactive>600</inactive>
   <output>
     <summary>false</summary>
     <tallies>true</tallies>

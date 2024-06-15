@@ -54,7 +54,7 @@ absorber_mat_data.set_total([absorber_sigma_a + absorber_sigma_s])
 absorber_mat_data.set_absorption([absorber_sigma_a])
 absorber_mat_data.set_scatter_matrix(np.rollaxis(np.array([[[absorber_sigma_s]]]),0,3))
 
-multiplier = 1.0
+multiplier = 100.0
 source_sigma_a = void_sigma_a * multiplier
 source_sigma_s = void_sigma_s * multiplier
 source_mat_data = openmc.XSdata('source', groups)
@@ -120,7 +120,7 @@ absorber_width = 30.0
 n_base = 6
 
 # This variable can be increased above 1 to refine the FSR mesh resolution further
-refinement_level = 1
+refinement_level = 5
 
 n = n_base * refinement_level
 pitch = absorber_width / n
@@ -164,7 +164,7 @@ settings = openmc.Settings()
 settings.energy_mode = "multi-group"
 settings.batches = 200
 settings.inactive = 100
-settings.particles = 4000
+settings.particles = 500
 settings.run_mode = 'fixed source'
 
 # Create an initial uniform spatial source for ray integration
@@ -176,7 +176,7 @@ rr_source = openmc.IndependentSource(space=uniform_dist_ray)
 settings.random_ray['distance_active'] = 500.0
 settings.random_ray['distance_inactive'] = 100.0
 settings.random_ray['ray_source'] = rr_source
-settings.random_ray['volume_estimator'] = 'naive'
+settings.random_ray['volume_estimator'] = 'segment_corrected'
 
 # Create the neutron source in the bottom right of the moderator
 strengths = [1.0] # Good - fast group appears largest (besides most thermal)
