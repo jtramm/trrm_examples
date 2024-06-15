@@ -2,14 +2,59 @@ import openmc
 import openmc.mgxs
 import numpy as np
 
+def pinmaker(inner_fill, outer_fill, num_sectors):
+
+    # example input radii
+    ring_radii = [0.241, 0.341, 0.418, 0.482, 0.54, 0.572, 0.612, 0.694, 0.786]
+    fills = [inner_fill, inner_fill, inner_fill, inner_fill, inner_fill, outer_fill, outer_fill, outer_fill, outer_fill, outer_fill]
+
+    pincell_base = openmc.Universe()
+
+    # We then create cells representing the bounded rings, with special
+    # treatment for both the innermost and outermost cells
+    cells = []
+    for r in range(len(fills)):
+        cell = []
+        if r == 0:
+            outer_bound = openmc.ZCylinder(r=ring_radii[r])
+            cell = openmc.Cell(fill=fills[r], region=-outer_bound)
+        elif r == len(fills) - 1:
+            inner_bound = openmc.ZCylinder(r=ring_radii[r-1])
+            cell = openmc.Cell(fill=fills[r], region=+inner_bound)
+        else:
+            inner_bound = openmc.ZCylinder(r=ring_radii[r-1])
+            outer_bound = openmc.ZCylinder(r=ring_radii[r])
+            cell = openmc.Cell(fill=fills[r], region=+inner_bound & -outer_bound)
+        pincell_base.add_cell(cell)
+
+    # We then generate num_sectors planes to bound num_sectors azimuthal sectors
+    azimuthal_planes = []
+    for i in range(num_sectors):
+        angle = 2 * i * openmc.pi / num_sectors
+        normal_vector = (-openmc.sin(angle), openmc.cos(angle), 0)
+        azimuthal_planes.append(openmc.Plane(a=normal_vector[0], b=normal_vector[1], c=normal_vector[2], d=0))
+
+    # Create a cell for each azimuthal sector using the pincell base class
+    azimuthal_cells = []
+    for i in range(num_sectors):
+        azimuthal_cell = openmc.Cell(name=f'azimuthal_cell_{i}')
+        azimuthal_cell.fill = pincell_base
+        azimuthal_cell.region = +azimuthal_planes[i] & -azimuthal_planes[(i+1) % num_sectors]
+        azimuthal_cells.append(azimuthal_cell)
+
+    # Create the (subdivided) geometry with the azimuthal universes
+    pincell = openmc.Universe(cells=azimuthal_cells)
+
+    return pincell
+
 ###############################################################################
 #                      Simulation Input File Parameters
 ###############################################################################
 
 # OpenMC simulation parameters
-batches = 200
-inactive = 100
-particles = 100000
+batches = 100
+inactive = 50
+particles = 1500
 
 ###############################################################################
 # MGXS
@@ -398,6 +443,18 @@ universes['MOX Rodded Assembly']        .add_cell(cells['MOX Rodded Assembly'])
 universes['Reflector Unrodded Assembly'].add_cell(cells['Reflector Unrodded Assembly'])
 universes['Reflector Rodded Assembly']  .add_cell(cells['Reflector Rodded Assembly'])
 
+
+
+
+###############################################################################
+# Subdivided Pincells
+###############################################################################
+
+num_sectors = 8
+pins_to_make = ['UO2', 'MOX 4.3%', 'MOX 7.0%', 'MOX 8.7%', 'Fission Chamber', 'Guide Tube', 'Control Rod']
+for pin in pins_to_make:
+    universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors)
+
 ###############################################################################
 #                     Create a dictionary of the assembly lattices
 ###############################################################################
@@ -592,8 +649,15 @@ settings_file.inactive = inactive
 settings_file.particles = particles
 settings_file.run_mode = 'eigenvalue'
 settings_file.output = {'tallies': False, 'summary': False}
-settings_file.source = openmc.Source(space=openmc.stats.Box(
-    [-32.13, -10.71, -1.0], [10.71, 32.13, 1.0], only_fissionable=True))
+
+# Create an initial uniform spatial source distribution for sampling rays.
+# Note that this must be uniform in space and angle.
+lower_left = (-64.26/2, -64.26/2, -64.26/2)
+upper_right = (64.26/2, 64.26/2, 64.26/2)
+uniform_dist = openmc.stats.Box(lower_left, upper_right)
+settings_file.random_ray['ray_source'] = openmc.IndependentSource(space=uniform_dist)
+settings_file.random_ray['distance_inactive'] = 40.0
+settings_file.random_ray['distance_active'] = 400.0
 
 ###############################################################################
 #                   Exporting to OpenMC plots.xml File
@@ -602,10 +666,9 @@ settings_file.source = openmc.Source(space=openmc.stats.Box(
 plot_1 = openmc.Plot(plot_id=1)
 plot_1.filename = 'plot_1'
 plot_1.origin = [0.0, 0.0, 0.0]
-plot_1.width = [64.26, 64.26]
-plot_1.pixels = [500, 500]
-plot_1.color_by = 'material'
-plot_1.basis = 'xy'
+plot_1.width = [64.26, 64.26, 1.0]
+plot_1.pixels = [5000, 5000, 1]
+plot_1.type = 'voxel'
 
 # Instantiate a Plots collection and export to XML
 plot_file = openmc.Plots([plot_1])
