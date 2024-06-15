@@ -17,7 +17,7 @@ threshold = 11
 # dimension. The default value is 5, which means the finer regions
 # near the core will be 5x5. The default for flat source C5G7
 # simulations is typically 5.
-fine_mod_dim = 10
+fine_mod_dim = 2
 
 # This variable controls the moderator reflector region coarse mesh
 # dimension. The default value is 1, which means the coarser regions
@@ -25,13 +25,16 @@ fine_mod_dim = 10
 # C5G7 simulations is typically 1.
 coarse_mod_dim = 1
 
-# This variable controls the number of azimuthal sectors in the
+# Thes variables control the number of azimuthal sectors in the
 # fuel and moderator regions. The default for flat source C5G7
 # simulations is typically 8.
-num_sectors_fuel = 8
+num_sectors_fuel = 4
 num_sectors_mod = 8
 
-
+# These variables control the number of rings in the fuel and moderator.
+# Typical values for flat source C5G7 simulations are 3.
+num_rings_fuel = 1
+num_rings_mod = 1
 
 def pinmaker_og(inner_fill, outer_fill, num_sectors):
 
@@ -590,7 +593,7 @@ universes['Reflector Side']             .add_cell(cells['Reflector Side'])
 pins_to_make = ['UO2', 'MOX 4.3%', 'MOX 7.0%', 'MOX 8.7%', 'Fission Chamber', 'Guide Tube', 'Control Rod']
 for pin in pins_to_make:
     #universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors_fuel,num_sectors_mod)  
-    universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors_fuel,num_sectors_mod, 0.54, 1.26, 3, 3)
+    universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors_fuel,num_sectors_mod, 0.54, 1.26, num_rings_fuel, num_rings_mod)
 
 ###############################################################################
 #                     Create a dictionary of the assembly lattices
