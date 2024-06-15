@@ -78,7 +78,7 @@ def pinmaker_og(inner_fill, outer_fill, num_sectors):
 
     return pincell
 
-def pinmaker(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer):
+def pinmaker_good(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer):
     # Example input radii
     ring_radii = [0.241, 0.341, 0.418, 0.482, 0.54, 0.572, 0.612, 0.694, 0.786]
     # Determine which fills to use for each ring
@@ -88,6 +88,57 @@ def pinmaker(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer):
 
     pincell_base = openmc.Universe()
     azimuthal_cells = []
+
+    for r in range(len(ring_radii) + 1):
+        if r == 0:
+            outer_bound = openmc.ZCylinder(r=ring_radii[r])
+            region = -outer_bound
+        elif r == len(ring_radii):
+            inner_bound = openmc.ZCylinder(r=ring_radii[r-1])
+            region = +inner_bound
+        else:
+            inner_bound = openmc.ZCylinder(r=ring_radii[r-1])
+            outer_bound = openmc.ZCylinder(r=ring_radii[r])
+            region = +inner_bound & -outer_bound
+        
+        # Create sectors within each region
+        azimuthal_planes = []
+        for j in range(num_sectors[r]):
+            angle = 2 * j * openmc.pi / num_sectors[r]
+            normal_vector = (-openmc.sin(angle), openmc.cos(angle), 0)
+            azimuthal_planes.append(openmc.Plane(a=normal_vector[0], b=normal_vector[1], c=normal_vector[2], d=0))
+
+        for j in range(num_sectors[r]):
+            sector_region = +azimuthal_planes[j] & -azimuthal_planes[(j+1) % num_sectors[r]]
+            cell = openmc.Cell(fill=fills[r], region=region & sector_region)
+            pincell_base.add_cell(cell)
+
+    return pincell_base
+
+def pinmaker(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer, fuel_radius, pitch, num_rings_fuel, num_rings_mod):
+    # Initialize arrays to store the radii and fill types
+    volumes = np.full(num_rings_fuel, (np.pi * fuel_radius**2) / num_rings_fuel)
+    radii = np.zeros(num_rings_fuel + 1)
+    radii[0] = 0
+
+    # Calculate radii for equal-volume fuel rings
+    for i in range(1, num_rings_fuel + 1):
+        radii[i] = np.sqrt(radii[i-1]**2 + volumes[i-1] / np.pi)
+
+    # Calculate radii for equal-spacing moderator rings
+    mod_radii = np.linspace(radii[-1], np.sqrt(2) * pitch / 2, num_rings_mod + 1)[1:]  # Skip the first which is the last fuel radius
+    ring_radii = np.concatenate([radii, mod_radii])
+
+    ring_radii = ring_radii[1:-1]
+    print(ring_radii)
+
+    # Determine which fills to use for each ring
+    fills = [inner_fill] * num_rings_fuel + [outer_fill] * num_rings_mod
+    
+    # Determine the number of sectors for each ring based on the fill
+    num_sectors = [num_sectors_inner] * num_rings_fuel + [num_sectors_outer] * num_rings_mod
+
+    pincell_base = openmc.Universe()
 
     for r in range(len(ring_radii) + 1):
         if r == 0:
@@ -538,7 +589,8 @@ universes['Reflector Side']             .add_cell(cells['Reflector Side'])
 
 pins_to_make = ['UO2', 'MOX 4.3%', 'MOX 7.0%', 'MOX 8.7%', 'Fission Chamber', 'Guide Tube', 'Control Rod']
 for pin in pins_to_make:
-    universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors_fuel,num_sectors_mod)
+    #universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors_fuel,num_sectors_mod)  
+    universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors_fuel,num_sectors_mod, 0.54, 1.26, 3, 3)
 
 ###############################################################################
 #                     Create a dictionary of the assembly lattices
