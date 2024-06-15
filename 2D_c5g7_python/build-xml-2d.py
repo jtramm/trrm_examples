@@ -403,6 +403,12 @@ cells['Reflector Rodded Assembly']   = openmc.Cell(name='Water Rodded Assembly')
 cells['Core']                        = openmc.Cell(name='Core')
 cells['UO2 Pin']                     = openmc.Cell(name='UO2 Pin')
 
+cells['Reflector Fine'] = openmc.Cell(name='Reflector Fine')
+cells['Reflector Coarse'] = openmc.Cell(name='Reflector Coarse')
+cells['Reflector Bottom'] = openmc.Cell(name='Reflector Bottom')
+cells['Reflector Corner'] = openmc.Cell(name='Reflector Corner')
+cells['Reflector Side'] = openmc.Cell(name='Reflector Side')
+
 # Use surface half-spaces to define regions
 cells['UO2'].region                       = -surfaces['Pin Cell ZCylinder']
 cells['MOX 4.3%'].region                  = -surfaces['Pin Cell ZCylinder']
@@ -464,6 +470,13 @@ universes['MOX Rodded Assembly']         = openmc.Universe(universe_id=12, name=
 universes['Reflector Unrodded Assembly'] = openmc.Universe(universe_id=13, name='Reflector Unrodded Assembly')
 universes['Reflector Rodded Assembly']   = openmc.Universe(universe_id=14, name='Reflector Rodded Assembly')
 
+universes['Reflector Coarse']            = openmc.Universe(name='Reflector Coarse')
+universes['Reflector Fine']              = openmc.Universe(name='Reflector Fine')
+universes['Reflector Bottom']            = openmc.Universe(name='Reflector Bottom')
+universes['Reflector Corner']            = openmc.Universe(name='Reflector Corner')
+universes['Reflector Side']              = openmc.Universe(name='Reflector Side')
+
+
 # Register Cells with Universes
 universes['Root']                       .add_cell(cells['Core'])
 universes['UO2']                        .add_cells([cells['UO2'], cells['UO2 Moderator']])
@@ -481,8 +494,11 @@ universes['MOX Rodded Assembly']        .add_cell(cells['MOX Rodded Assembly'])
 universes['Reflector Unrodded Assembly'].add_cell(cells['Reflector Unrodded Assembly'])
 universes['Reflector Rodded Assembly']  .add_cell(cells['Reflector Rodded Assembly'])
 
-
-
+universes['Reflector Coarse']           .add_cell(cells['Reflector Coarse'])
+universes['Reflector Fine']             .add_cell(cells['Reflector Fine'])
+universes['Reflector Bottom']           .add_cell(cells['Reflector Bottom'])
+universes['Reflector Corner']           .add_cell(cells['Reflector Corner'])
+universes['Reflector Side']             .add_cell(cells['Reflector Side'])
 
 ###############################################################################
 # Subdivided Pincells
@@ -620,6 +636,93 @@ lattices['Reflector Unrodded Assembly'].pitch = [21.42, 21.42]
 w = universes['Reflector']
 lattices['Reflector Unrodded Assembly'].universes = [[w]]
 
+
+
+
+
+
+
+
+# Subdivided reflectors
+
+fine_mod_dim = 5
+lattices['Reflector Fine'] = openmc.RectLattice()
+lattices['Reflector Fine'].dimension = [fine_mod_dim, fine_mod_dim]
+lattices['Reflector Fine'].lower_left = [-0.63, -0.63]
+lattices['Reflector Fine'].pitch = [1.26/fine_mod_dim, 1.26/fine_mod_dim] 
+lattices['Reflector Fine'].universes = [[w]*fine_mod_dim]*fine_mod_dim
+
+coarse_mod_dim = 1
+lattices['Reflector Coarse'] = openmc.RectLattice()
+lattices['Reflector Coarse'].dimension = [coarse_mod_dim, coarse_mod_dim]
+lattices['Reflector Coarse'].lower_left = [-0.63, -0.63]
+lattices['Reflector Coarse'].pitch = [1.26/coarse_mod_dim, 1.26/coarse_mod_dim]
+lattices['Reflector Coarse'].universes = [[w]*coarse_mod_dim]*coarse_mod_dim
+
+# Define the dimensions for the grid
+total_rows = 17
+total_columns = 17
+threshold = 11  # Number of rows with 'f'
+
+# Initialize the matrix
+pattern = []
+
+c = universes['Reflector Coarse']
+f = universes['Reflector Fine']
+
+# Fill the matrix
+for i in range(total_rows):
+    if i < threshold:
+        pattern.append([f for _ in range(total_columns)])
+    else:
+        pattern.append([c for _ in range(total_columns)])
+
+lattices['Reflector Bottom'] = openmc.RectLattice()
+lattices['Reflector Bottom'].dimension = [17, 17]
+lattices['Reflector Bottom'].lower_left = [-10.71, -10.71]
+lattices['Reflector Bottom'].pitch = [1.26, 1.26]
+lattices['Reflector Bottom'].universes = pattern
+
+pattern = []
+# Fill the matrix
+for i in range(total_rows):
+    row = []
+    for j in range(total_columns):
+        if i >= threshold or j >= threshold:
+            row.append(c)  # Fill 'c' in the bottom 6 rows and rightmost 6 columns
+        else:
+            row.append(f)  # Fill 'f' elsewhere
+    pattern.append(row)
+
+lattices['Reflector Corner'] = openmc.RectLattice()
+lattices['Reflector Corner'].dimension = [17, 17]
+lattices['Reflector Corner'].lower_left = [-10.71, -10.71]
+lattices['Reflector Corner'].pitch = [1.26, 1.26]
+lattices['Reflector Corner'].universes = pattern
+
+pattern = []
+# Fill the matrix
+for i in range(total_rows):
+    row = []
+    for j in range(total_columns):
+        if j < threshold:
+            row.append(f)  # Fill 'f' in the rightmost 6 columns
+        else:
+            row.append(c)  # Fill 'c' in all other cells
+    pattern.append(row)
+
+lattices['Reflector Side'] = openmc.RectLattice()
+lattices['Reflector Side'].dimension = [17, 17] 
+lattices['Reflector Side'].lower_left = [-10.71, -10.71]
+lattices['Reflector Side'].pitch = [1.26, 1.26]
+lattices['Reflector Side'].universes = pattern
+
+
+
+
+
+
+
 lattices['Reflector Rodded Assembly'] = \
     openmc.RectLattice(lattice_id=106, name='Reflector Rodded Assembly')
 lattices['Reflector Rodded Assembly'].dimension = [17, 17]
@@ -654,6 +757,13 @@ cells['MOX Rodded Assembly'].fill         = lattices['MOX Rodded Assembly']
 cells['Reflector Unrodded Assembly'].fill = lattices['Reflector Unrodded Assembly']
 cells['Reflector Rodded Assembly'].fill   = lattices['Reflector Rodded Assembly']
 
+cells['Reflector Coarse'].fill = lattices['Reflector Coarse']
+cells['Reflector Fine'].fill = lattices['Reflector Fine']
+
+cells['Reflector Bottom'].fill = lattices['Reflector Bottom']
+cells['Reflector Corner'].fill = lattices['Reflector Corner']
+cells['Reflector Side'].fill = lattices['Reflector Side']
+
 ###############################################################################
 # Base Universe
 ###############################################################################
@@ -669,7 +779,10 @@ lattices['Core'].pitch = [21.42, 21.42]
 w = universes['Reflector Unrodded Assembly']
 u = universes['UO2 Unrodded Assembly']
 m = universes['MOX Unrodded Assembly']
-lattices['Core'].universes = [[u, m, w], [m, u, w], [w, w, w]]
+b = universes['Reflector Bottom']
+co = universes['Reflector Corner']
+s = universes['Reflector Side']
+lattices['Core'].universes = [[u, m, s], [m, u, s], [b, b, co]]
 cells['Core'].fill = lattices['Core']
 
 # Instantiate a Geometry, register the root Universe, and export to XML

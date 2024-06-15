@@ -13,8 +13,8 @@
     </source>
     <volume_estimator>segment_corrected</volume_estimator>
   </random_ray>
-  <batches>1000</batches>
-  <inactive>600</inactive>
+  <batches>100</batches>
+  <inactive>60</inactive>
   <output>
     <summary>false</summary>
     <tallies>true</tallies>
