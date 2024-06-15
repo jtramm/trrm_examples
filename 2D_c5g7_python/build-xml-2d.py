@@ -2,9 +2,9 @@ import openmc
 import openmc.mgxs
 import numpy as np
 
-#########################
-# Subdivision variables
-#########################
+###############################################################################
+# Mesh Subdivision Variables
+###############################################################################
 
 # This variable controls how many of the outer reflector region
 # pincell sizes regions will be subdivided into fine vs. coarse
@@ -17,7 +17,7 @@ threshold = 11
 # dimension. The default value is 10, which means the finer regions
 # near the core will be 5x5. The default for flat source C5G7
 # simulations is typically 10.
-fine_mod_dim = 10
+fine_mod_dim = 2
 
 # This variable controls the moderator reflector region coarse mesh
 # dimension. The default value is 1, which means the coarser regions
@@ -28,25 +28,58 @@ coarse_mod_dim = 1
 # Thes variables control the number of azimuthal sectors in the
 # fuel and moderator regions. The default for flat source C5G7
 # simulations is typically 8.
-num_sectors_fuel = 8
+num_sectors_fuel = 4
 num_sectors_mod = 8
 
 # These variables control the number of rings in the fuel and moderator.
 # Typical values for flat source C5G7 simulations are 3.
-num_rings_fuel = 3
-num_rings_mod = 3
+num_rings_fuel = 1
+num_rings_mod = 1
 
 # These values control the angle offset of the pincell azimthual sectors.
 # The default values are 0.0.
-#inner_angle_offset = openmc.pi / 4.0
-#outer_angle_offset = openmc.pi / 8.0
+inner_angle_offset = openmc.pi / 4.0
+outer_angle_offset = openmc.pi / 8.0
 
-inner_angle_offset = 0.0
-outer_angle_offset = 0.0
+###############################################################################
+# General Settings
+###############################################################################
 
-#########################
-# End Subdivision variables
-#########################
+# Instantiate a Settings, set all runtime parameters, and export to XML
+settings_file = openmc.Settings()
+settings_file.energy_mode = "multi-group"
+settings_file.batches = 1000
+settings_file.inactive = 600
+settings_file.particles = 1500
+settings_file.run_mode = 'eigenvalue'
+settings_file.output = {'tallies': False, 'summary': False}
+
+# Create an initial uniform spatial source distribution for sampling rays.
+# Note that this must be uniform in space and angle.
+lower_left = (-64.26/2, -64.26/2, -64.26/2)
+upper_right = (64.26/2, 64.26/2, 64.26/2)
+uniform_dist = openmc.stats.Box(lower_left, upper_right)
+settings_file.random_ray['ray_source'] = openmc.IndependentSource(space=uniform_dist)
+settings_file.random_ray['distance_inactive'] = 40.0
+settings_file.random_ray['distance_active'] = 400.0
+
+###############################################################################
+# Plots
+###############################################################################
+
+plot_1 = openmc.Plot(plot_id=1)
+plot_1.filename = 'plot_1'
+plot_1.origin = [0.0, 0.0, 0.0]
+plot_1.width = [64.26, 64.26, 1.0]
+plot_1.pixels = [2000, 2000, 1]
+plot_1.type = 'voxel'
+
+# Instantiate a Plots collection and export to XML
+plot_file = openmc.Plots([plot_1])
+
+###############################################################################
+# Pinmaker Utility
+###############################################################################
 
 def pinmaker(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer, fuel_radius, pitch, num_rings_fuel, num_rings_mod, inner_angle_offset, outer_angle_offset):
     # Initialize arrays to store the radii and fill types
@@ -102,16 +135,6 @@ def pinmaker(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer, fuel_
             pincell_base.add_cell(cell)
 
     return pincell_base
-
-
-###############################################################################
-#                      Simulation Input File Parameters
-###############################################################################
-
-# OpenMC simulation parameters
-batches = 1000
-inactive = 600
-particles = 1500
 
 ###############################################################################
 # MGXS
@@ -811,41 +834,7 @@ geometry = openmc.Geometry()
 geometry.root_universe = universes['Root']
 geometry.remove_redundant_surfaces()
 
-###############################################################################
-#                   Exporting to OpenMC settings.xml File
-###############################################################################
 
-# Instantiate a Settings, set all runtime parameters, and export to XML
-settings_file = openmc.Settings()
-settings_file.energy_mode = "multi-group"
-settings_file.batches = batches
-settings_file.inactive = inactive
-settings_file.particles = particles
-settings_file.run_mode = 'eigenvalue'
-settings_file.output = {'tallies': False, 'summary': False}
-
-# Create an initial uniform spatial source distribution for sampling rays.
-# Note that this must be uniform in space and angle.
-lower_left = (-64.26/2, -64.26/2, -64.26/2)
-upper_right = (64.26/2, 64.26/2, 64.26/2)
-uniform_dist = openmc.stats.Box(lower_left, upper_right)
-settings_file.random_ray['ray_source'] = openmc.IndependentSource(space=uniform_dist)
-settings_file.random_ray['distance_inactive'] = 40.0
-settings_file.random_ray['distance_active'] = 400.0
-
-###############################################################################
-#                   Exporting to OpenMC plots.xml File
-###############################################################################
-
-plot_1 = openmc.Plot(plot_id=1)
-plot_1.filename = 'plot_1'
-plot_1.origin = [0.0, 0.0, 0.0]
-plot_1.width = [64.26, 64.26, 1.0]
-plot_1.pixels = [4000, 4000, 1]
-plot_1.type = 'voxel'
-
-# Instantiate a Plots collection and export to XML
-plot_file = openmc.Plots([plot_1])
 
 ###############################################################################
 # Tallies
