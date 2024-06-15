@@ -36,89 +36,16 @@ num_sectors_mod = 8
 num_rings_fuel = 1
 num_rings_mod = 1
 
-def pinmaker_og(inner_fill, outer_fill, num_sectors):
+# These values control the angle offset of the pincell azimthual sectors.
+# The default values are 0.0.
+inner_angle_offset = openmc.pi / 4.0
+outer_angle_offset = openmc.pi / 8.0
 
-    # example input radii
-    ring_radii = [0.241, 0.341, 0.418, 0.482, 0.54, 0.572, 0.612, 0.694, 0.786]
-    fills = [inner_fill, inner_fill, inner_fill, inner_fill, inner_fill, outer_fill, outer_fill, outer_fill, outer_fill, outer_fill]
+#########################
+# End Subdivision variables
+#########################
 
-    pincell_base = openmc.Universe()
-
-    # We then create cells representing the bounded rings, with special
-    # treatment for both the innermost and outermost cells
-    cells = []
-    for r in range(len(fills)):
-        cell = []
-        if r == 0:
-            outer_bound = openmc.ZCylinder(r=ring_radii[r])
-            cell = openmc.Cell(fill=fills[r], region=-outer_bound)
-        elif r == len(fills) - 1:
-            inner_bound = openmc.ZCylinder(r=ring_radii[r-1])
-            cell = openmc.Cell(fill=fills[r], region=+inner_bound)
-        else:
-            inner_bound = openmc.ZCylinder(r=ring_radii[r-1])
-            outer_bound = openmc.ZCylinder(r=ring_radii[r])
-            cell = openmc.Cell(fill=fills[r], region=+inner_bound & -outer_bound)
-        pincell_base.add_cell(cell)
-
-    # We then generate num_sectors planes to bound num_sectors azimuthal sectors
-    azimuthal_planes = []
-    for i in range(num_sectors):
-        angle = 2 * i * openmc.pi / num_sectors
-        normal_vector = (-openmc.sin(angle), openmc.cos(angle), 0)
-        azimuthal_planes.append(openmc.Plane(a=normal_vector[0], b=normal_vector[1], c=normal_vector[2], d=0))
-
-    # Create a cell for each azimuthal sector using the pincell base class
-    azimuthal_cells = []
-    for i in range(num_sectors):
-        azimuthal_cell = openmc.Cell(name=f'azimuthal_cell_{i}')
-        azimuthal_cell.fill = pincell_base
-        azimuthal_cell.region = +azimuthal_planes[i] & -azimuthal_planes[(i+1) % num_sectors]
-        azimuthal_cells.append(azimuthal_cell)
-
-    # Create the (subdivided) geometry with the azimuthal universes
-    pincell = openmc.Universe(cells=azimuthal_cells)
-
-    return pincell
-
-def pinmaker_good(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer):
-    # Example input radii
-    ring_radii = [0.241, 0.341, 0.418, 0.482, 0.54, 0.572, 0.612, 0.694, 0.786]
-    # Determine which fills to use for each ring
-    fills = [inner_fill] * 5 + [outer_fill] * 5
-    # Determine the number of sectors for each ring based on the fill
-    num_sectors = [num_sectors_inner] * 5 + [num_sectors_outer] * 5
-
-    pincell_base = openmc.Universe()
-    azimuthal_cells = []
-
-    for r in range(len(ring_radii) + 1):
-        if r == 0:
-            outer_bound = openmc.ZCylinder(r=ring_radii[r])
-            region = -outer_bound
-        elif r == len(ring_radii):
-            inner_bound = openmc.ZCylinder(r=ring_radii[r-1])
-            region = +inner_bound
-        else:
-            inner_bound = openmc.ZCylinder(r=ring_radii[r-1])
-            outer_bound = openmc.ZCylinder(r=ring_radii[r])
-            region = +inner_bound & -outer_bound
-        
-        # Create sectors within each region
-        azimuthal_planes = []
-        for j in range(num_sectors[r]):
-            angle = 2 * j * openmc.pi / num_sectors[r]
-            normal_vector = (-openmc.sin(angle), openmc.cos(angle), 0)
-            azimuthal_planes.append(openmc.Plane(a=normal_vector[0], b=normal_vector[1], c=normal_vector[2], d=0))
-
-        for j in range(num_sectors[r]):
-            sector_region = +azimuthal_planes[j] & -azimuthal_planes[(j+1) % num_sectors[r]]
-            cell = openmc.Cell(fill=fills[r], region=region & sector_region)
-            pincell_base.add_cell(cell)
-
-    return pincell_base
-
-def pinmaker(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer, fuel_radius, pitch, num_rings_fuel, num_rings_mod):
+def pinmaker(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer, fuel_radius, pitch, num_rings_fuel, num_rings_mod, inner_angle_offset, outer_angle_offset):
     # Initialize arrays to store the radii and fill types
     volumes = np.full(num_rings_fuel, (np.pi * fuel_radius**2) / num_rings_fuel)
     radii = np.zeros(num_rings_fuel + 1)
@@ -159,6 +86,10 @@ def pinmaker(inner_fill, outer_fill, num_sectors_inner, num_sectors_outer, fuel_
         azimuthal_planes = []
         for j in range(num_sectors[r]):
             angle = 2 * j * openmc.pi / num_sectors[r]
+            if r < num_rings_fuel:
+                angle += inner_angle_offset
+            else:
+                angle += outer_angle_offset
             normal_vector = (-openmc.sin(angle), openmc.cos(angle), 0)
             azimuthal_planes.append(openmc.Plane(a=normal_vector[0], b=normal_vector[1], c=normal_vector[2], d=0))
 
@@ -593,7 +524,7 @@ universes['Reflector Side']             .add_cell(cells['Reflector Side'])
 pins_to_make = ['UO2', 'MOX 4.3%', 'MOX 7.0%', 'MOX 8.7%', 'Fission Chamber', 'Guide Tube', 'Control Rod']
 for pin in pins_to_make:
     #universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors_fuel,num_sectors_mod)  
-    universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors_fuel,num_sectors_mod, 0.54, 1.26, num_rings_fuel, num_rings_mod)
+    universes[pin] = pinmaker(materials[pin],materials['Water'],num_sectors_fuel,num_sectors_mod, 0.54, 1.26, num_rings_fuel, num_rings_mod, inner_angle_offset, outer_angle_offset)
 
 ###############################################################################
 #                     Create a dictionary of the assembly lattices
