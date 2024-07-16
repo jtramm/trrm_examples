@@ -18,6 +18,8 @@ threshold = 11
 # near the core will be 5x5. The default for flat source C5G7
 # simulations is typically 10.
 fine_mod_dim = 2
+#fine_mod_dim = 1
+#fine_mod_dim = 10
 
 # This variable controls the moderator reflector region coarse mesh
 # dimension. The default value is 1, which means the coarser regions
@@ -29,17 +31,32 @@ coarse_mod_dim = 1
 # fuel and moderator regions. The default for flat source C5G7
 # simulations is typically 8.
 num_sectors_fuel = 4
+#num_sectors_fuel = 8
 num_sectors_mod = 8
 
 # These variables control the number of rings in the fuel and moderator.
 # Typical values for flat source C5G7 simulations are 3.
 num_rings_fuel = 1
 num_rings_mod = 1
+#num_rings_fuel = 3
+#num_rings_mod = 3
 
 # These values control the angle offset of the pincell azimthual sectors.
 # The default values are 0.0.
 inner_angle_offset = openmc.pi / 4.0
 outer_angle_offset = openmc.pi / 8.0
+
+#inner_angle_offset = 0.0
+#outer_angle_offset = 0.0
+
+#z_min = -0.1
+#z_max = 0.1
+
+z_min = -32.13
+z_max = 32.13
+
+#z_min = -1.0e9
+#z_max = 1.0e9
 
 ###############################################################################
 # General Settings
@@ -50,18 +67,19 @@ settings_file = openmc.Settings()
 settings_file.energy_mode = "multi-group"
 settings_file.batches = 1000
 settings_file.inactive = 600
-settings_file.particles = 1500
+settings_file.particles = 500
 settings_file.run_mode = 'eigenvalue'
 settings_file.output = {'tallies': False, 'summary': False}
 
 # Create an initial uniform spatial source distribution for sampling rays.
 # Note that this must be uniform in space and angle.
-lower_left = (-64.26/2, -64.26/2, -64.26/2)
-upper_right = (64.26/2, 64.26/2, 64.26/2)
+lower_left = (-64.26/2, -64.26/2, -1e-5)
+upper_right = (64.26/2, 64.26/2, 1e-5)
 uniform_dist = openmc.stats.Box(lower_left, upper_right)
 settings_file.random_ray['ray_source'] = openmc.IndependentSource(space=uniform_dist)
-settings_file.random_ray['distance_inactive'] = 40.0
-settings_file.random_ray['distance_active'] = 400.0
+settings_file.random_ray['distance_inactive'] = 20.0
+settings_file.random_ray['distance_active'] = 200.0
+settings_file.random_ray['source_shape'] = 'linear_xy'
 
 ###############################################################################
 # Plots
@@ -71,7 +89,7 @@ plot_1 = openmc.Plot(plot_id=1)
 plot_1.filename = 'plot_1'
 plot_1.origin = [0.0, 0.0, 0.0]
 plot_1.width = [64.26, 64.26, 1.0]
-plot_1.pixels = [2000, 2000, 1]
+plot_1.pixels = [40, 40, 1]
 plot_1.type = 'voxel'
 
 # Instantiate a Plots collection and export to XML
@@ -393,8 +411,8 @@ surfaces['Core x-min']         = openmc.XPlane(x0=-32.13, name='Core x-min')
 surfaces['Core x-max']         = openmc.XPlane(x0= 32.13, name='Core x-max')
 surfaces['Core y-min']         = openmc.YPlane(y0=-32.13, name='Core y-min')
 surfaces['Core y-max']         = openmc.YPlane(y0= 32.13, name='Core y-max')
-surfaces['Small Core z-min']   = openmc.ZPlane(z0=-32.13, name='Small Core z-min')
-surfaces['Small Core z-max']   = openmc.ZPlane(z0= 32.13, name='Small Core z-max')
+surfaces['Small Core z-min']   = openmc.ZPlane(z0=z_min, name='Small Core z-min')
+surfaces['Small Core z-max']   = openmc.ZPlane(z0=z_max, name='Small Core z-max')
 surfaces['Big Core z-min']     = openmc.ZPlane(z0=-107.1, name='Big Core z-min')
 surfaces['Big Core z-max']     = openmc.ZPlane(z0= 107.1, name='Big Core z-max')
 surfaces['Pin x-min']          = openmc.XPlane(x0=-0.63, name='Pin x-min')
@@ -406,7 +424,7 @@ surfaces['Core x-max'].boundary_type       = 'vacuum'
 surfaces['Core y-min'].boundary_type       = 'vacuum'
 surfaces['Core y-max'].boundary_type       = 'reflective'
 surfaces['Small Core z-min'].boundary_type = 'reflective'
-surfaces['Small Core z-max'].boundary_type = 'vacuum'
+surfaces['Small Core z-max'].boundary_type = 'reflective'
 surfaces['Big Core z-min'].boundary_type   = 'reflective'
 surfaces['Big Core z-max'].boundary_type   = 'vacuum'
 surfaces['Pin x-min'].boundary_type        = 'reflective'
@@ -813,8 +831,11 @@ cells['Reflector Side'].fill = lattices['Reflector Side']
 ###############################################################################
 
 # Instantiate Core boundaries
+#cells['Core'].region = +surfaces['Core x-min'] & +surfaces['Core y-min'] & \
+#    -surfaces['Core x-max'] & -surfaces['Core y-max']
+
 cells['Core'].region = +surfaces['Core x-min'] & +surfaces['Core y-min'] & \
-    -surfaces['Core x-max'] & -surfaces['Core y-max']
+    -surfaces['Core x-max'] & -surfaces['Core y-max'] & +surfaces['Small Core z-min'] & -surfaces['Small Core z-max']
 
 lattices['Core'] = openmc.RectLattice(lattice_id=201, name='3x3 core lattice')
 lattices['Core'].dimension = [3, 3]
@@ -871,4 +892,5 @@ model.xs_data = mg_cross_sections_file
 model.tallies = tallies_file
 model.plots = plot_file
 
-model.export_to_model_xml()
+#model.export_to_model_xml()
+model.export_to_xml()

@@ -28,7 +28,7 @@ def fill_cube(N, n_1, n_2, fill_1, fill_2, fill_3):
                 else:
                     cube[i][j][k] = fill_3
 
-    print_dimensions(cube)
+    #print_dimensions(cube)
     return cube
 
 ###############################################################################
@@ -40,6 +40,7 @@ groups = openmc.mgxs.EnergyGroups(group_edges=ebins)
 
 void_sigma_a = 4.0e-6
 void_sigma_s = 3.0e-4
+print(void_sigma_a + void_sigma_s)
 void_mat_data = openmc.XSdata('void', groups)
 void_mat_data.order = 0
 void_mat_data.set_total([void_sigma_a + void_sigma_s])
@@ -54,11 +55,12 @@ absorber_mat_data.set_total([absorber_sigma_a + absorber_sigma_s])
 absorber_mat_data.set_absorption([absorber_sigma_a])
 absorber_mat_data.set_scatter_matrix(np.rollaxis(np.array([[[absorber_sigma_s]]]),0,3))
 
-multiplier = 100.0
+multiplier = 0.1
 source_sigma_a = void_sigma_a * multiplier
 source_sigma_s = void_sigma_s * multiplier
 source_mat_data = openmc.XSdata('source', groups)
 source_mat_data.order = 0
+print(source_sigma_a + source_sigma_s)
 source_mat_data.set_total([source_sigma_a + source_sigma_s])
 source_mat_data.set_absorption([source_sigma_a])
 source_mat_data.set_scatter_matrix(np.rollaxis(np.array([[[source_sigma_s]]]),0,3))
@@ -120,7 +122,7 @@ absorber_width = 30.0
 n_base = 6
 
 # This variable can be increased above 1 to refine the FSR mesh resolution further
-refinement_level = 5
+refinement_level = 1
 
 n = n_base * refinement_level
 pitch = absorber_width / n
@@ -132,7 +134,7 @@ lattice = openmc.RectLattice()
 lattice.lower_left = [0.0, 0.0, 0.0]
 lattice.pitch = [pitch, pitch, pitch]
 lattice.universes = pattern
-print(lattice)
+#print(lattice)
 
 lattice_cell = openmc.Cell(fill=lattice)
 
@@ -162,9 +164,12 @@ geometry = openmc.Geometry(root)
 # Instantiate a Settings object, set all runtime parameters, and export to XML
 settings = openmc.Settings()
 settings.energy_mode = "multi-group"
-settings.batches = 200
-settings.inactive = 100
-settings.particles = 500
+settings.inactive = 5
+settings.batches = 10
+#settings.particles = 90
+#settings.particles = 173
+#settings.particles = 265
+settings.particles = 700
 settings.run_mode = 'fixed source'
 
 # Create an initial uniform spatial source for ray integration
@@ -176,7 +181,11 @@ rr_source = openmc.IndependentSource(space=uniform_dist_ray)
 settings.random_ray['distance_active'] = 500.0
 settings.random_ray['distance_inactive'] = 100.0
 settings.random_ray['ray_source'] = rr_source
-settings.random_ray['volume_estimator'] = 'segment_corrected'
+#settings.random_ray['volume_estimator'] = 'simulation_averaged'
+#settings.random_ray['volume_estimator'] = 'segment_corrected'
+#settings.random_ray['volume_estimator'] = 'naive'
+settings.random_ray['volume_normalized_flux_tallies'] = False
+settings.random_ray['source_shape'] = 'linear'
 
 # Create the neutron source in the bottom right of the moderator
 strengths = [1.0] # Good - fast group appears largest (besides most thermal)
@@ -252,6 +261,6 @@ model.materials = materials_file
 model.settings = settings
 model.xs_data = mg_cross_sections_file
 model.tallies = tallies
-model.plots = plot_file
+#model.plots = plot_file
 
 model.export_to_model_xml()

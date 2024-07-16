@@ -95,7 +95,7 @@ def create_random_ray_model():
     
     # n controls the dimension of subdivision within each outer lattice element
     # E.g., n = 10 results in 1cm cubic FSRs
-    n = 10
+    n = 1
     delta = 10.0 / n
     ll = [-5.0, -5.0, -5.0]
     pitch = [delta, delta, delta]
@@ -238,18 +238,28 @@ def create_random_ray_model():
     settings.energy_mode = "multi-group"
     settings.batches = 200
     settings.inactive = 100
-    settings.particles = 10000
+    settings.particles = 1000
+    #settings.particles = 2810
+    #settings.particles = 4200
+    #settings.particles = 10000
     settings.run_mode = 'fixed source'
     settings.random_ray['distance_active'] = 400.0
     settings.random_ray['distance_inactive'] = 100.0
     settings.random_ray['ray_source'] = rr_source
+    settings.random_ray['volume_normalized_flux_tallies'] = False
+    #settings.random_ray['volume_estimator'] = 'simulation_averaged'
+    #settings.random_ray['volume_estimator'] = 'segment_corrected'
+    #settings.random_ray['volume_estimator'] = 'source_corrected'
+    #settings.random_ray['volume_estimator'] = 'naive'
+    settings.random_ray['source_shape'] = 'linear'
     
     # Create the neutron source in the bottom right of the moderator
     strengths = [1.0] # Good - fast group appears largest (besides most thermal)
     midpoints = [100.0]
     energy_distribution = openmc.stats.Discrete(x=midpoints,p=strengths)
     
-    source = openmc.IndependentSource(energy=energy_distribution, domains=[source_mat], strength=1.0) # base source material
+    source = openmc.IndependentSource(energy=energy_distribution, constraints={'domains':[source_mat]}, strength=1.0)
+    #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_mat], strength=1.0) # base source material
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[sub], strength=1.0) # universe containing source cell
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_cell], strength=1.0) # Material-filled cell
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_lattice_cell], strength=1.0) # Higher level cell

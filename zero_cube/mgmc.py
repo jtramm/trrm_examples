@@ -151,7 +151,7 @@ settings = openmc.Settings()
 settings.energy_mode = "multi-group"
 settings.batches = 100
 settings.inactive = 0
-settings.particles = 1000000
+settings.particles = 10000
 settings.run_mode = 'fixed source'
 
 #settings.random_ray_distance_active = 100.0

@@ -185,7 +185,7 @@ def create_random_ray_model():
     settings = openmc.Settings()
     settings.energy_mode = "multi-group"
     settings.batches = 100
-    settings.inactive = 5
+    #settings.inactive = 5
     settings.particles = 1000000
     settings.run_mode = 'fixed source'
 
@@ -235,7 +235,7 @@ def create_random_ray_model():
     #tally.estimator = 'collision'
     #tally.estimator = 'analog'
 
-    estimator = 'collision'
+    estimator = 'tracklength'
 
     # Case 3A
     mesh_3A = openmc.RegularMesh()
@@ -275,6 +275,7 @@ def create_random_ray_model():
 
     # Instantiate a Tallies collection and export to XML
     tallies = openmc.Tallies([tally_3A, tally_3B, tally_3C])
+
 
     ###############################################################################
     #                   Exporting to OpenMC plots.xml file
