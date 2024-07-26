@@ -184,7 +184,7 @@ def create_random_ray_model():
     # Instantiate a Settings object, set all runtime parameters, and export to XML
     settings = openmc.Settings()
     settings.energy_mode = "multi-group"
-    settings.batches = 100
+    settings.batches = 1600
     #settings.inactive = 5
     settings.particles = 1000000
     settings.run_mode = 'fixed source'
@@ -273,8 +273,41 @@ def create_random_ray_model():
     tally_3C.scores = ['flux']
     tally_3C.estimator = estimator
 
+    # Source
+    source_filter = openmc.MaterialFilter(source_mat)
+    tally_source = openmc.Tally(name="Source")
+    tally_source.filters = [source_filter]
+    tally_source.scores = ['flux']
+    tally_source.estimator = estimator
+    
+    # Void
+    void_filter = openmc.MaterialFilter(void_mat)
+    tally_void = openmc.Tally(name="Void")
+    tally_void.filters = [void_filter]
+    tally_void.scores = ['flux']
+    tally_void.estimator = estimator
+    
+    # Shield
+    shield_filter = openmc.MaterialFilter(shield_mat)
+    tally_shield = openmc.Tally(name="Shield")
+    tally_shield.filters = [shield_filter]
+    tally_shield.scores = ['flux']
+    tally_shield.estimator = estimator
+    
+    # Far Cell
+    mesh_far = openmc.RegularMesh()
+    mesh_far.dimension = (1, 1, 1)
+    mesh_far.lower_left = (50.0, 90.0, 50.0)
+    mesh_far.upper_right = (60, 100.0, 60.0)
+    mesh_filter_far = openmc.MeshFilter(mesh_far)
+    
+    tally_far = openmc.Tally(name="Case far")
+    tally_far.filters = [mesh_filter_far]
+    tally_far.scores = ['flux']
+    tally_far.estimator = estimator
+
     # Instantiate a Tallies collection and export to XML
-    tallies = openmc.Tallies([tally_3A, tally_3B, tally_3C])
+    tallies = openmc.Tallies([tally_3A, tally_3B, tally_3C, tally_source, tally_void, tally_shield, tally_far])
 
 
     ###############################################################################
