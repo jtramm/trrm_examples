@@ -211,7 +211,7 @@ def create_random_ray_model():
     midpoints = [100.0]
     energy_distribution = openmc.stats.Discrete(x=midpoints,p=strengths)
     
-    source = openmc.IndependentSource(energy=energy_distribution, constraints={domains:[source_mat]}, strength=1.0) # base source material
+    source = openmc.IndependentSource(energy=energy_distribution, constraints={'domains':[source_mat]}, strength=1.0) # base source material
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[sub], strength=1.0) # universe containing source cell
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_cell], strength=1.0) # Material-filled cell
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_lattice_cell], strength=1.0) # Higher level cell
