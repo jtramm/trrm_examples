@@ -187,7 +187,7 @@ def create_random_ray_model():
     rr_source = openmc.IndependentSource(space=uniform_dist)
     
     dim = 10
-    divide_mesh = openmc.RegularMesh(domains=[root])
+    divide_mesh = openmc.RegularMesh()
     divide_mesh.dimension = (dim * x_dim, dim * y_dim, dim * z_dim)
     divide_mesh.lower_left = (0.0, 0.0, 0.0)
     divide_mesh.upper_right = (x, y, z)
@@ -202,7 +202,8 @@ def create_random_ray_model():
     settings.random_ray['distance_active'] = 400.0
     settings.random_ray['distance_inactive'] = 200.0
     settings.random_ray['ray_source'] = rr_source
-    settings.random_ray['meshes'] = [divide_mesh]
+    settings.random_ray['source_region_meshes'] = [(divide_mesh, [geometry.root_universe])]
+
     
     
     # Create the neutron source in the bottom right of the moderator
@@ -210,7 +211,7 @@ def create_random_ray_model():
     midpoints = [100.0]
     energy_distribution = openmc.stats.Discrete(x=midpoints,p=strengths)
     
-    source = openmc.IndependentSource(energy=energy_distribution, domains=[source_mat], strength=1.0) # base source material
+    source = openmc.IndependentSource(energy=energy_distribution, constraints={domains:[source_mat]}, strength=1.0) # base source material
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[sub], strength=1.0) # universe containing source cell
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_cell], strength=1.0) # Material-filled cell
     #source = openmc.IndependentSource(energy=energy_distribution, domains=[source_lattice_cell], strength=1.0) # Higher level cell
